@@ -73,10 +73,12 @@ export default function EmployeesPage() {
       return emp;
     });
 
+    const formData = new FormData();
+    formData.append("file", file);
     const res = await fetch("/api/employees/bulk", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ employees: mapped }),
+      // no headers needed for FormData
+      body: formData,
     });
     const data = await res.json();
     setBulkResult(data);

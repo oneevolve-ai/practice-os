@@ -1,78 +1,92 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { employees } = body;
+export async function POST(req: NextRequest) {
+  const formData = await req.formData();
+  const file = formData.get("file") as File;
+  if (!file) return NextResponse.json({ error: "No file" }, { status: 400 });
 
-    if (!employees || !Array.isArray(employees) || employees.length === 0) {
-      return NextResponse.json({ error: "No employee data provided" }, { status: 400 });
+  const text = await file.text();
+  const lines = text.split("\n").filter(Boolean);
+  if (lines.length < 2) return NextResponse.json({ error: "Empty file" }, { status: 400 });
+
+  const headers = lines[0].split(",").map(h => h.replace(/"/g, "").trim().toLowerCase());
+  const created: string[] = [];
+  const errors: string[] = [];
+
+  const parseDate = (d: string) => {
+    if (!d) return null;
+    const parsed = new Date(d);
+    return isNaN(parsed.getTime()) ? null : parsed;
+  };
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+
+    const values: string[] = [];
+    let current = "";
+    let inQuotes = false;
+    for (let c = 0; c < line.length; c++) {
+      if (line[c] === '"') { inQuotes = !inQuotes; continue; }
+      if (line[c] === "," && !inQuotes) { values.push(current.trim()); current = ""; continue; }
+      current += line[c];
     }
+    values.push(current.trim());
 
-    let created = 0;
-    let failed = 0;
-    const errors: string[] = [];
+    const row: Record<string, string> = {};
+    headers.forEach((h, idx) => { row[h] = values[idx] || ""; });
 
-    for (const emp of employees) {
-      try {
-        if (!emp.name || !emp.email) {
-          errors.push(`Row skipped: missing name or email (${emp.name || emp.email || "unknown"})`);
-          failed++;
-          continue;
-        }
+    const name = row["name"];
+    if (!name) { errors.push(`Row ${i}: skipped — missing name`); continue; }
 
-        await prisma.employee.create({
-          data: {
-            name: emp.name?.trim(),
-            email: emp.email?.trim().toLowerCase(),
-            personalEmail: emp.personalEmail?.trim() || null,
-            phone: emp.phone?.trim() || null,
-            personalMobile: emp.personalMobile?.trim() || null,
-            linkedin: emp.linkedin?.trim() || null,
-            designation: emp.designation?.trim() || null,
-            roleDescription: emp.roleDescription?.trim() || null,
-            departmentId: emp.departmentId || null,
-            reportingOffice: emp.reportingOffice?.trim() || null,
-            reportingManager: emp.reportingManager?.trim() || null,
-            hrLead: emp.hrLead?.trim() || null,
-            joiningDate: emp.joiningDate ? new Date(emp.joiningDate) : null,
-            dateOfBirth: emp.dateOfBirth ? new Date(emp.dateOfBirth) : null,
-            status: emp.status === "INACTIVE" ? "INACTIVE" : "ACTIVE",
-            yearsOfExperience: emp.yearsOfExperience ? parseFloat(emp.yearsOfExperience) : null,
-            highestQualification: emp.highestQualification?.trim() || null,
-            previousOrganisations: emp.previousOrganisations?.trim() || null,
-            orientation: emp.orientation?.trim() || null,
-            projectRole: ["ARCHITECT", "ENGINEER", "CONSULTANT", "PROJECT_MANAGER", "DESIGNER"].includes(emp.projectRole?.toUpperCase()) ? emp.projectRole.toUpperCase() : "OTHER",
-            scopeExpertise: emp.scopeExpertise?.trim() || null,
-            projectTypeExpertise: emp.projectTypeExpertise?.trim() || null,
-            scopeStageExpertise: emp.scopeStageExpertise?.trim() || null,
-            licenseNumbers: emp.licenseNumbers?.trim() || null,
-            isPE: emp.isPE === true || emp.isPE === "true" || emp.isPE === "yes" || emp.isPE === "Yes",
-            isRA: emp.isRA === true || emp.isRA === "true" || emp.isRA === "yes" || emp.isRA === "Yes",
-            address: emp.address?.trim() || null,
-            salaryBand: emp.salaryBand?.trim() || null,
-            emergencyContact: emp.emergencyContact?.trim() || null,
-            emergencyPhone: emp.emergencyPhone?.trim() || null,
-            aadharNumber: emp.aadharNumber?.trim() || null,
-            passportNumber: emp.passportNumber?.trim() || null,
-          },
-        });
-        created++;
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        if (msg.includes("Unique constraint")) {
-          errors.push(`${emp.name} (${emp.email}): Email already exists`);
-        } else {
-          errors.push(`${emp.name}: ${msg.slice(0, 100)}`);
-        }
-        failed++;
-      }
+    const emailVal = row["email"] || `noemail_${i}_${Date.now()}@placeholder.com`;
+
+    try {
+      const data = {
+        name,
+        email: emailVal,
+        personalEmail: row["personalemail"] || null,
+        phone: row["phone"] || row["personalmobile"] || null,
+        personalMobile: row["personalmobile"] || null,
+        linkedin: row["linkedin"] || null,
+        designation: row["designation"] || null,
+        roleDescription: row["roledescription"] || null,
+        reportingOffice: row["reportingoffice"] || null,
+        reportingManager: row["reportingmanager"] || null,
+        hrLead: row["hrlead"] || null,
+        status: (["ACTIVE","INACTIVE","ON_LEAVE","OFFBOARDED"].includes(row["status"]) ? row["status"] : "ACTIVE") as any,
+        joiningDate: parseDate(row["joiningdate"]),
+        dateOfBirth: parseDate(row["dateofbirth"]),
+        yearsOfExperience: row["yearsofexperience"] ? parseFloat(row["yearsofexperience"]) || null : null,
+        highestQualification: row["highestqualification"] || null,
+        previousOrganisations: row["previousorganisations"] || null,
+        orientation: row["orientation"] || null,
+        projectRole: (row["projectrole"] || "OTHER") as any,
+        scopeExpertise: row["scopeexpertise"] || null,
+        projectTypeExpertise: row["projecttypeexpertise"] || null,
+        scopeStageExpertise: row["scopestageexpertise"] || null,
+        licenseNumbers: row["licensenumbers"] || null,
+        isPE: row["ispe"] === "1" || row["ispe"]?.toLowerCase() === "true",
+        isRA: row["isra"] === "1" || row["isra"]?.toLowerCase() === "true",
+        address: row["address"] || null,
+        salaryBand: row["salaryband"] || null,
+        emergencyContact: row["emergencycontact"] || null,
+        emergencyPhone: row["emergencyphone"] || null,
+        aadharNumber: row["aadharnumber"] || null,
+        passportNumber: row["passportnumber"] || null,
+      };
+
+      await prisma.employee.upsert({
+        where: { email: emailVal },
+        update: data,
+        create: data,
+      });
+      created.push(name);
+    } catch (e: any) {
+      errors.push(`Row ${i} (${name}): ${e.message?.slice(0, 100)}`);
     }
-
-    return NextResponse.json({ created, failed, total: employees.length, errors });
-  } catch (error) {
-    console.error("POST /api/employees/bulk error:", error);
-    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
+
+  return NextResponse.json({ created: created.length, errors });
 }
