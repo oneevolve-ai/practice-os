@@ -353,3 +353,175 @@ model BiometricCredential {
   deviceName   String?
   createdAt    DateTime @default(now())
 }
+
+model Invoice {
+  id            String        @id @default(cuid())
+  tenantId      String        @default("default")
+  number        String        @unique
+  clientName    String
+  clientGstin   String?
+  clientEmail   String?
+  clientAddress String?
+  placeOfSupply String?
+  invoiceDate   DateTime      @default(now())
+  dueDate       DateTime?
+  subtotal      Float         @default(0)
+  gstRate       Float         @default(18)
+  cgst          Float         @default(0)
+  sgst          Float         @default(0)
+  igst          Float         @default(0)
+  total         Float         @default(0)
+  status        InvoiceStatus @default(DRAFT)
+  notes         String?
+  items         InvoiceItem[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  description String
+  hsnCode     String?
+  quantity    Float   @default(1)
+  unit        String  @default("nos")
+  rate        Float
+  amount      Float
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id          String        @id @default(cuid())
+  tenantId    String        @default("default")
+  date        DateTime      @default(now())
+  category    String
+  description String
+  amount      Float
+  gstAmount   Float         @default(0)
+  receiptUrl  String?
+  projectName String?
+  status      ExpenseStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  VIEWED
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Client {
+  id                String    @id @default(cuid())
+  tenantId          String    @default("default")
+  name              String
+  uin               String?
+  businessType      String?
+  businessScale     String?
+  engagementLevel   String?
+  established       Int?
+  accountManager    String?
+  industry          String?
+  website           String?
+  linkedIn          String?
+  instagram         String?
+  email             String?
+  phone             String?
+  headquarters      String?
+  officesInCities   String?
+  gstin             String?
+  pan               String?
+  incorporationCert String?
+  bankAccountDetails String?
+  companyAnniversary String?
+  notes             String?
+  status            ClientStatus @default(PROSPECT)
+  contacts          Contact[]
+  deals             Deal[]
+  proposals         ClientProposal[]
+  activities        CRMActivity[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Contact {
+  id                   String   @id @default(cuid())
+  clientId             String
+  name                 String
+  photo                String?
+  designation          String?
+  phone                String?
+  email                String?
+  linkedIn             String?
+  instagram            String?
+  residentCity         String?
+  accountManager       String?
+  yearsOfExperience    Int?
+  isPrimary            Boolean  @default(false)
+  interests            String?
+  notes                String?
+  birthday             DateTime?
+  workAnniversary      DateTime?
+  previousOrganisations String?
+  educationalInstitutes String?
+  createdAt            DateTime @default(now())
+  client               Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+}
+
+model Deal {
+  id          String    @id @default(cuid())
+  clientId    String
+  title       String
+  stage       DealStage @default(LEAD)
+  value       Float?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  client      Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+}
+
+model CRMActivity {
+  id        String   @id @default(cuid())
+  clientId  String
+  type      String
+  notes     String
+  date      DateTime @default(now())
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+}
+
+model ClientProposal {
+  id        String   @id @default(cuid())
+  clientId  String
+  title     String
+  value     Float?
+  status    String   @default("DRAFT")
+  sentDate  DateTime?
+  createdAt DateTime @default(now())
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+}
+
+enum ClientStatus {
+  PROSPECT
+  ACTIVE
+  INACTIVE
+  CHURNED
+}
+
+enum DealStage {
+  LEAD
+  SHORTLISTED
+  PRESENTATION
+  PROJECT_DEAL
+  PROPOSAL_SENT
+  WON
+  LOST
+  ON_HOLD
+}

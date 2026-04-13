@@ -111,7 +111,7 @@ export default function NewEmployeePage() {
             <Field label="LinkedIn"><input name="linkedin" placeholder="https://linkedin.com/in/..." className={ic} /></Field>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Reporting Office"><input name="reportingOffice" placeholder="e.g. Mumbai HQ" className={ic} /></Field>
+            <Field label="Reporting Office"><select name="reportingOffice" className={ic}><option value="">Select Office</option><option value="Bengaluru">Bengaluru</option><option value="Mumbai">Mumbai</option><option value="Pune">Pune</option><option value="Bhubaneswar">Bhubaneswar</option></select></Field>
             <Field label="Reporting Manager">
               <select name="reportingManagerId" className={ic}><option value="">Select...</option>{employees.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}</select>
             </Field>

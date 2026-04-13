@@ -17,8 +17,8 @@ const modules = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard, active: true },
   { name: "Travel", href: "/travel", icon: Plane, active: true },
   { name: "HRMS", href: "/people", icon: Users, active: true },
-  { name: "Money", href: "/money", icon: DollarSign, active: false },
-  { name: "Clients", href: "/clients", icon: Building2, active: false },
+  { name: "Money", href: "/money", icon: DollarSign, active: true },
+  { name: "Clients", href: "/clients", icon: Building2, active: true },
   { name: "Projects", href: "/projects", icon: FolderKanban, active: false },
   { name: "Docs", href: "/docs", icon: FileText, active: false },
 ];
