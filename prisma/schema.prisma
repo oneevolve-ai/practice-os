@@ -525,3 +525,82 @@ enum DealStage {
   LOST
   ON_HOLD
 }
+
+model Project {
+  id          String        @id @default(cuid())
+  tenantId    String        @default("default")
+  name        String
+  code        String?
+  clientId    String?
+  clientName  String?
+  type        String        @default("Digital Twin")
+  status      ProjectStatus @default(PLANNING)
+  startDate   DateTime?
+  endDate     DateTime?
+  budget      Float?
+  billingType String        @default("Fixed Fee")
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  timesheets  Timesheet[]
+  milestones  Milestone[]
+}
+
+model Timesheet {
+  id           String   @id @default(cuid())
+  tenantId     String   @default("default")
+  projectId    String
+  employeeId   String?
+  employeeName String?
+  date         DateTime @default(now())
+  hours        Float
+  description  String?
+  billable     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Milestone {
+  id        String    @id @default(cuid())
+  projectId String
+  title     String
+  dueDate   DateTime?
+  completed Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  ARCHIVED
+}
+
+model Visitor {
+  id            String        @id @default(cuid())
+  tenantId      String        @default("default")
+  name          String
+  company       String?
+  phone         String?
+  email         String?
+  purpose       String?
+  hostName      String?
+  hostPhone     String?
+  expectedTime  DateTime?
+  checkIn       DateTime?
+  checkOut      DateTime?
+  status        VisitorStatus @default(EXPECTED)
+  qrCode        String?
+  notes         String?
+  createdAt     DateTime      @default(now())
+}
+
+enum VisitorStatus {
+  EXPECTED
+  CHECKED_IN
+  CHECKED_OUT
+  NO_SHOW
+  CANCELLED
+}
