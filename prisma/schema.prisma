@@ -625,3 +625,13 @@ model Document {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+
+model WhatsappSession {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  state     String   @default("MAIN_MENU")
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}

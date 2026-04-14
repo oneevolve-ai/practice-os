@@ -4,28 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 import {
-  Plane,
-  Users,
-  DollarSign,
-  Building2,
-  FolderKanban,
-  FileText,
-  LayoutDashboard,
+  Users, DollarSign, Building2, FolderKanban,
+  LayoutDashboard, Settings
 } from "lucide-react";
-
-const modules = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard, active: true },
-  { name: "Travel", href: "/travel", icon: Plane, active: true },
-  { name: "HRMS", href: "/people", icon: Users, active: true },
-  { name: "Money", href: "/money", icon: DollarSign, active: true },
-  { name: "Clients", href: "/clients", icon: Building2, active: true },
-  { name: "Projects", href: "/projects", icon: FolderKanban, active: true },
-  { name: "Visitors", href: "/visitors", icon: Users, active: true },
-  { name: "Docs", href: "/docs", icon: FileText, active: true },
-];
 
 export function Sidebar() {
   const pathname = usePathname();
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const linkClass = (href: string) => clsx(
+    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+    isActive(href) ? "bg-zinc-700/60 text-white" : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+  );
 
   return (
     <aside className="flex flex-col w-64 bg-zinc-900 text-white min-h-screen">
@@ -35,36 +27,35 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 p-4 space-y-1">
-        {modules.map((mod) => {
-          const Icon = mod.icon;
-          const isCurrent =
-            mod.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(mod.href);
+        <Link href="/" className={linkClass("/")}>
+          <LayoutDashboard className="w-5 h-5 shrink-0" />
+          <span>Dashboard</span>
+        </Link>
 
-          return (
-            <Link
-              key={mod.name}
-              href={mod.active ? mod.href : "#"}
-              className={clsx(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                isCurrent && mod.active
-                  ? "bg-zinc-700/60 text-white"
-                  : mod.active
-                    ? "text-zinc-300 hover:bg-zinc-800 hover:text-white"
-                    : "text-zinc-600 cursor-not-allowed"
-              )}
-            >
-              <Icon className="w-5 h-5 shrink-0" />
-              <span>{mod.name}</span>
-              {!mod.active && (
-                <span className="ml-auto text-[10px] bg-zinc-800 text-zinc-500 px-1.5 py-0.5 rounded">
-                  Soon
-                </span>
-              )}
-            </Link>
-          );
-        })}
+        <Link href="/people" className={linkClass("/people")}>
+          <Users className="w-5 h-5 shrink-0" />
+          <span>HRMS</span>
+        </Link>
+
+        <Link href="/administration" className={linkClass("/administration")}>
+          <Settings className="w-5 h-5 shrink-0" />
+          <span>Administration</span>
+        </Link>
+
+        <Link href="/clients" className={linkClass("/clients")}>
+          <Building2 className="w-5 h-5 shrink-0" />
+          <span>CRM</span>
+        </Link>
+
+        <Link href="/money" className={linkClass("/money")}>
+          <DollarSign className="w-5 h-5 shrink-0" />
+          <span>Finance</span>
+        </Link>
+
+        <Link href="/projects" className={linkClass("/projects")}>
+          <FolderKanban className="w-5 h-5 shrink-0" />
+          <span>Work Orders</span>
+        </Link>
       </nav>
 
       <div className="p-4 border-t border-zinc-800">
