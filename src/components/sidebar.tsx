@@ -21,7 +21,7 @@ const modules = [
   { name: "Clients", href: "/clients", icon: Building2, active: true },
   { name: "Projects", href: "/projects", icon: FolderKanban, active: true },
   { name: "Visitors", href: "/visitors", icon: Users, active: true },
-  { name: "Docs", href: "/docs", icon: FileText, active: false },
+  { name: "Docs", href: "/docs", icon: FileText, active: true },
 ];
 
 export function Sidebar() {

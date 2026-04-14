@@ -604,3 +604,20 @@ enum VisitorStatus {
   NO_SHOW
   CANCELLED
 }
+
+model Document {
+  id          String   @id @default(cuid())
+  tenantId    String   @default("default")
+  title       String
+  category    String
+  description String?
+  fileUrl     String?
+  fileType    String?
+  fileSize    Int?
+  tags        String?
+  projectName String?
+  clientName  String?
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
