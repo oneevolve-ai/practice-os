@@ -60,6 +60,7 @@ export function Sidebar() {
 
       <div className="p-4 border-t border-zinc-800">
         <p className="text-xs text-zinc-500">practice-os.ai v0.1.0</p>
+        <p className="text-xs text-zinc-400 mt-1">Created by Sagar.U</p>
       </div>
     </aside>
   );
