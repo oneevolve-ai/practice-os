@@ -122,7 +122,7 @@ export default function ProposalsPage() {
           <table className="w-full text-sm">
             <thead className="bg-zinc-50 border-b border-zinc-200">
               <tr>
-                {["Title","Organisation","Value","Status","Sent Date","Created"].map(h => (
+                {["Title","Organisation","Value","Status","Sent Date","Created","PDF"].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500">{h}</th>
                 ))}
               </tr>
@@ -138,6 +138,7 @@ export default function ProposalsPage() {
                   </td>
                   <td className="px-4 py-3 text-zinc-500">{p.sentDate ? new Date(p.sentDate).toLocaleDateString("en-IN") : "—"}</td>
                   <td className="px-4 py-3 text-zinc-500">{new Date(p.createdAt).toLocaleDateString("en-IN")}</td>
+                      <td className="px-4 py-3"><a href={`/api/proposals/${p.id}/pdf`} target="_blank" className="text-xs text-blue-600 hover:underline">Download PDF</a></td>
                 </tr>
               ))}
             </tbody>

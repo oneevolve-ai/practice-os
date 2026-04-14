@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2, Plus, Pencil, Trash2, X } from "lucide-react";
+import { Building2, Plus, Pencil, Trash2, X, Upload, Download } from "lucide-react";
 import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Department {
@@ -19,6 +19,9 @@ export default function DepartmentsPage() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
+  const [bulkUploading, setBulkUploading] = useState(false);
+  const [bulkResult, setBulkResult] = useState<{ created: number; errors: string[] } | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
 
   function fetchDepartments() {
@@ -86,6 +89,8 @@ export default function DepartmentsPage() {
           <p className="text-zinc-500 mt-1">Manage company departments</p>
         </div>
         {!showForm && (
+          <>
+          <button onClick={() => setShowBulk(!showBulk)} className="inline-flex items-center gap-2 border border-zinc-300 text-zinc-700 px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-zinc-50 mr-2"><Upload className="w-4 h-4" />Bulk Upload</button>
           <button
             onClick={() => { setShowForm(true); setEditId(null); }}
             className="inline-flex items-center gap-2 bg-zinc-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-zinc-800"
@@ -93,7 +98,41 @@ export default function DepartmentsPage() {
             <Plus className="w-4 h-4" />
             Add Department
           </button>
+          </>
         )}
+
+      {showBulk && (
+        <div className="bg-white rounded-xl border border-zinc-200 p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-zinc-900">Bulk Upload Departments</h2>
+            <button onClick={() => { setShowBulk(false); setBulkResult(null); }} className="text-zinc-400 hover:text-zinc-600"><X className="w-4 h-4" /></button>
+          </div>
+          <a href="/api/departments/template" download className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 mb-4 block"><Download className="w-4 h-4" />Download CSV Template</a>
+          <p className="text-xs text-zinc-500 mb-4">Required: <strong>name</strong>. Optional: <strong>code</strong> (auto-generated if blank), description</p>
+          <label className="flex items-center justify-center gap-2 cursor-pointer border-2 border-dashed border-zinc-300 rounded-lg px-6 py-8 text-sm text-zinc-500 hover:border-zinc-400">
+            <Upload className="w-4 h-4" />
+            {bulkUploading ? "Uploading..." : "Click to upload CSV file"}
+            <input type="file" accept=".csv" className="hidden" disabled={bulkUploading} onChange={e => {
+              const f = e.target.files?.[0];
+              if (f) {
+                setBulkUploading(true);
+                const fd = new FormData();
+                fd.append("file", f);
+                fetch("/api/departments/bulk", { method: "POST", body: fd })
+                  .then(r => r.json())
+                  .then(data => { setBulkResult(data); setBulkUploading(false); if (data.created > 0) fetchDepartments(); })
+                  .catch(() => setBulkUploading(false));
+              }
+            }} />
+          </label>
+          {bulkResult && (
+            <div className={`mt-4 rounded-lg p-4 text-sm ${bulkResult.errors.length > 0 ? "bg-amber-50 border border-amber-200" : "bg-green-50 border border-green-200"}`}>
+              <p className="font-medium">✅ {bulkResult.created} department(s) created</p>
+              {bulkResult.errors.length > 0 && <ul className="text-xs text-amber-700 mt-2">{bulkResult.errors.map((e, i) => <li key={i}>• {e}</li>)}</ul>}
+            </div>
+          )}
+        </div>
+      )}
       </div>
 
       {showForm && (

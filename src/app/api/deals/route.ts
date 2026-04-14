@@ -20,6 +20,9 @@ export async function POST(req: NextRequest) {
       title: body.title,
       stage: body.stage || "LEAD",
       value: body.value ? Number(body.value) : null,
+      notes: body.notes || null,
+      closeDate: body.closeDate ? new Date(body.closeDate) : null,
+      probability: body.probability ? Number(body.probability) : null,
     },
     include: { client: { select: { name: true } } },
   });

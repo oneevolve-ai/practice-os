@@ -216,6 +216,8 @@ model Attendance {
   status      AttendanceStatus @default(PRESENT)
   workHours   Float?
   notes       String?
+  closeDate   DateTime?
+  probability Int?
   isHoliday   Boolean          @default(false)
   isLeave     Boolean          @default(false)
   lateArrival Boolean          @default(false)
@@ -483,6 +485,8 @@ model Deal {
   stage       DealStage @default(LEAD)
   value       Float?
   notes       String?
+  closeDate   DateTime?
+  probability Int?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   client      Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)

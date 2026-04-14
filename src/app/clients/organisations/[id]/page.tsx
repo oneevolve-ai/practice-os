@@ -134,7 +134,7 @@ export default function OrganisationDetailPage() {
               {client.contacts.map(c=>(
                 <div key={c.id} className="bg-white rounded-xl border border-zinc-200 p-4">
                   <div className="flex items-start justify-between mb-2">
-                    <div><p className="font-semibold text-zinc-900">{c.name}</p>{c.designation&&<p className="text-xs text-zinc-500">{c.designation}</p>}</div>
+                    <div><a href={`/clients/contacts/${c.id}`} className="font-semibold text-blue-600 hover:underline">{c.name}</a>{c.designation&&<p className="text-xs text-zinc-500">{c.designation}</p>}</div>
                     {c.isPrimary&&<span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">Primary</span>}
                   </div>
                   <div className="space-y-1 text-xs text-zinc-500">
