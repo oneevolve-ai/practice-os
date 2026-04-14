@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, Building2, CalendarOff, Clock, Calendar } from "lucide-react";
+import { Users, Building2, CalendarOff, Clock, Calendar, FileText } from "lucide-react";
 
 const sections = [
   { name: "Employees", href: "/people/employees", icon: Users },
@@ -10,6 +10,7 @@ const sections = [
   { name: "Leave", href: "/people/leave", icon: CalendarOff },
   { name: "Attendance", href: "/people/attendance", icon: Clock },
   { name: "Holidays", href: "/people/holidays", icon: Calendar },
+  { name: "Payslips", href: "/people/payslips", icon: FileText },
 ];
 
 export function PeopleSubNav() {

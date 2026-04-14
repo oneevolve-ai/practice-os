@@ -144,6 +144,12 @@ model Employee {
   // Personal / HR
   address          String?
   salaryBand       String?
+  basicSalary      Float?
+  hra              Float?
+  allowances       Float?
+  deductions       Float?
+  pfNumber         String?
+  esiNumber        String?
   emergencyContact String?
   emergencyPhone   String?
 
@@ -158,6 +164,7 @@ model Employee {
   attendance       Attendance[]
   documents        EmployeeDocument[]
   regularizationRequests RegularizationRequest[]
+  payslips         Payslip[]
 }
 
 model EmployeeDocument {
@@ -634,4 +641,25 @@ model WhatsappSession {
   data      Json     @default("{}")
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+}
+model Payslip {
+  id              String   @id @default(cuid())
+  employeeId      String
+  month           Int
+  year            Int
+  basicSalary     Float    @default(0)
+  hra             Float    @default(0)
+  allowances      Float    @default(0)
+  grossSalary     Float    @default(0)
+  pfDeduction     Float    @default(0)
+  esiDeduction    Float    @default(0)
+  otherDeductions Float    @default(0)
+  netSalary       Float    @default(0)
+  workingDays     Int      @default(26)
+  presentDays     Int      @default(26)
+  status          String   @default("DRAFT")
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  employee        Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }

@@ -1,0 +1,34 @@
+-- AlterTable
+ALTER TABLE "Employee" ADD COLUMN     "allowances" DOUBLE PRECISION,
+ADD COLUMN     "basicSalary" DOUBLE PRECISION,
+ADD COLUMN     "deductions" DOUBLE PRECISION,
+ADD COLUMN     "esiNumber" TEXT,
+ADD COLUMN     "hra" DOUBLE PRECISION,
+ADD COLUMN     "pfNumber" TEXT;
+
+-- CreateTable
+CREATE TABLE "Payslip" (
+    "id" TEXT NOT NULL,
+    "employeeId" TEXT NOT NULL,
+    "month" INTEGER NOT NULL,
+    "year" INTEGER NOT NULL,
+    "basicSalary" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "hra" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "allowances" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "grossSalary" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "pfDeduction" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "esiDeduction" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "otherDeductions" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "netSalary" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "workingDays" INTEGER NOT NULL DEFAULT 26,
+    "presentDays" INTEGER NOT NULL DEFAULT 26,
+    "status" TEXT NOT NULL DEFAULT 'DRAFT',
+    "notes" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Payslip_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Payslip" ADD CONSTRAINT "Payslip_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE CASCADE ON UPDATE CASCADE;
