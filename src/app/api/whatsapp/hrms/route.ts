@@ -293,6 +293,64 @@ export async function POST(req: NextRequest) {
       }
 
       default:
+        // Handle manager approval/rejection
+        if (msgText.startsWith("APPROVE ") || msgText.startsWith("REJECT ")) {
+          const parts = msgText.split(" ");
+          const action = parts[0];
+          const shortId = parts[1];
+
+          // Find leave request by short ID
+          const leaves = await prisma.leaveRequest.findMany({
+            where: { status: "PENDING" },
+            include: { employee: true },
+          });
+          const leave = leaves.find(l => l.id.slice(0,8).toUpperCase() === shortId);
+
+          if (!leave) {
+            await sendWhatsApp(phone, `❌ Leave request *${shortId}* not found or already processed.`);
+          } else {
+            const newStatus = action === "APPROVE" ? "APPROVED" : "REJECTED";
+            await prisma.leaveRequest.update({
+              where: { id: leave.id },
+              data: { status: newStatus },
+            });
+
+            // Notify manager
+            await sendWhatsApp(phone,
+              `${action === "APPROVE" ? "✅" : "❌"} Leave request for *${leave.employee.name}* has been *${newStatus}*.`
+            );
+
+            // Notify employee
+            const empPhone = leave.employee.phone || leave.employee.personalMobile;
+            if (empPhone) {
+              const days = Math.ceil((new Date(leave.endDate).getTime() - new Date(leave.startDate).getTime()) / 86400000) + 1;
+              await sendWhatsApp(empPhone,
+                action === "APPROVE"
+                  ? `✅ *Leave Approved!*
+
+` +
+                    `Your *${leave.leaveType} Leave* request has been approved.
+
+` +
+                    `📅 ${new Date(leave.startDate).toLocaleDateString("en-IN")} → ${new Date(leave.endDate).toLocaleDateString("en-IN")}
+` +
+                    `📆 ${days} day${days > 1 ? "s" : ""}
+
+` +
+                    `Enjoy your leave! 🌴`
+                  : `❌ *Leave Rejected*
+
+` +
+                    `Your *${leave.leaveType} Leave* request for ${new Date(leave.startDate).toLocaleDateString("en-IN")} → ${new Date(leave.endDate).toLocaleDateString("en-IN")} has been rejected.
+
+` +
+                    `Please contact your manager for more details.`
+              );
+            }
+          }
+          return NextResponse.json({ status: "approval processed" });
+        }
+
         // MAIN_MENU or any unrecognised state
         if (msgText === "LOG_ATTENDANCE") {
           await updateSession(phone, "AWAITING_LOCATION", {});
