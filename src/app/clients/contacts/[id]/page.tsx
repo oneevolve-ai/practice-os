@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Phone, Mail, MapPin, Linkedin, Star } from "lucide-react";
+import { Phone, Mail, MapPin, Star, ExternalLink } from "lucide-react";
 
 interface Contact {
   id: string; name: string; designation: string | null; phone: string | null;
@@ -67,7 +67,7 @@ export default function ContactDetailPage() {
           )}
           {contact.linkedIn && (
             <a href={contact.linkedIn} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-50">
-              <Linkedin className="w-4 h-4 text-zinc-400" />
+              <ExternalLink className="w-4 h-4 text-zinc-400" />
               <span className="text-sm text-blue-600">LinkedIn Profile</span>
             </a>
           )}
