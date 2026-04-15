@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
-import { Users, Building2, CalendarOff, Clock, Calendar, FileText, RefreshCw, DollarSign, ClipboardList, TrendingUp } from "lucide-react";
+import { Users, Building2, CalendarOff, Clock, Calendar, FileText, RefreshCw, DollarSign, ClipboardList, TrendingUp, LogOut } from "lucide-react";
 
 const navGroups = [
   {
@@ -14,6 +14,7 @@ const navGroups = [
       { name: "Onboarding", href: "/people/employees/onboarding", icon: ClipboardList },
       { name: "Performance", href: "/people/performance", icon: TrendingUp },
       { name: "Letters", href: "/people/letters", icon: FileText },
+      { name: "Exit", href: "/people/exit", icon: LogOut },
     ],
   },
   {

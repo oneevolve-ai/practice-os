@@ -170,6 +170,7 @@ model Employee {
   leaveCarryForwards    LeaveCarryForward[]
   leaveEncashments      LeaveEncashment[]
   performanceReviews    PerformanceReview[]
+  exitManagement        ExitManagement?
 }
 
 model EmployeeDocument {
@@ -709,4 +710,23 @@ model PerformanceReview {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   employee       Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model ExitManagement {
+  id                String   @id @default(cuid())
+  employeeId        String   @unique
+  resignationDate   DateTime
+  lastWorkingDay    DateTime
+  noticePeriod      Int      @default(60)
+  reason            String?
+  exitType          String   @default("RESIGNATION")
+  status            String   @default("NOTICE_PERIOD")
+  interviewDone     Boolean  @default(false)
+  interviewNotes    String?
+  clearance         Json     @default("{}")
+  fnfAmount         Float?
+  fnfStatus         String   @default("PENDING")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  employee          Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
