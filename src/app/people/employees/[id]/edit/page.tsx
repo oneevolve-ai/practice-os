@@ -40,7 +40,7 @@ interface Employee {
   projectRole: string; scopeExpertise: string | null;
   projectTypeExpertise: string | null; scopeStageExpertise: string | null;
   licenseNumbers: string | null; isPE: boolean; isRA: boolean;
-  address: string | null; salaryBand: string | null;
+  address: string | null; salaryBand: string | null; basicSalary: number | null; hra: number | null; allowances: number | null;
   emergencyContact: string | null; emergencyPhone: string | null;
   aadharNumber: string | null; passportNumber: string | null;
 }
@@ -84,7 +84,7 @@ export default function EditEmployeePage() {
       scopeStageExpertise: f.get("scopeStageExpertise") || "",
       licenseNumbers: f.get("licenseNumbers") || "",
       isPE: f.get("isPE") === "on", isRA: f.get("isRA") === "on",
-      address: f.get("address") || "", salaryBand: f.get("salaryBand") || "",
+      address: f.get("address") || "", salaryBand: f.get("salaryBand") || "", basicSalary: f.get("basicSalary") ? Number(f.get("basicSalary")) : null, hra: f.get("hra") ? Number(f.get("hra")) : null, allowances: f.get("allowances") ? Number(f.get("allowances")) : null,
       emergencyContact: f.get("emergencyContact") || "", emergencyPhone: f.get("emergencyPhone") || "",
       aadharNumber: f.get("aadharNumber") || "", passportNumber: f.get("passportNumber") || "",
     };
@@ -186,6 +186,9 @@ export default function EditEmployeePage() {
         <Section title="HR Details">
           <div className="grid grid-cols-2 gap-4">
             <Field label="Salary Band"><input name="salaryBand" defaultValue={emp.salaryBand || ""} className={ic} /></Field>
+            <Field label="Basic Salary (₹)"><input name="basicSalary" type="number" defaultValue={emp.basicSalary || ""} className={ic} placeholder="e.g. 30000" /></Field>
+            <Field label="HRA (₹)"><input name="hra" type="number" defaultValue={emp.hra || ""} className={ic} placeholder="Auto: 40% of basic" /></Field>
+            <Field label="Other Allowances (₹)"><input name="allowances" type="number" defaultValue={emp.allowances || ""} className={ic} placeholder="0" /></Field>
             <div />
           </div>
           <div className="grid grid-cols-2 gap-4">
