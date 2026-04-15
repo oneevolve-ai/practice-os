@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Plus, Download, FileText, X } from "lucide-react";
+import { Plus, Download, FileText, X, Users } from "lucide-react";
 
 interface Employee { id: string; name: string; designation: string | null; department: { name: string } | null; }
 interface Payslip { id: string; employeeId: string; month: number; year: number; basicSalary: number; hra: number; allowances: number; grossSalary: number; pfDeduction: number; esiDeduction: number; otherDeductions: number; netSalary: number; workingDays: number; presentDays: number; status: string; employee: { name: string; designation: string | null; department: { name: string } | null }; }
@@ -12,7 +12,11 @@ export default function PayslipsPage() {
   const [payslips, setPayslips] = useState<Payslip[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [bulkLoading, setBulkLoading] = useState(false);
+  const [bulkResult, setBulkResult] = useState<{ created: number; skipped: number; errors: string[] } | null>(null);
+  const [bulkForm, setBulkForm] = useState({ month: new Date().getMonth() + 1, year: new Date().getFullYear(), defaultBasic: "", status: "DRAFT" });
   const [form, setForm] = useState({
     employeeId: "", month: new Date().getMonth() + 1, year: new Date().getFullYear(),
     basicSalary: "", hra: "", allowances: "", pfDeduction: "", esiDeduction: "",
@@ -60,10 +64,71 @@ export default function PayslipsPage() {
           <h1 className="text-2xl font-bold text-zinc-900">Payslips</h1>
           <p className="text-zinc-500 text-sm">{payslips.length} payslips generated</p>
         </div>
-        <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">
-          <Plus className="w-4 h-4" /> Generate Payslip
-        </button>
+        <div className="flex gap-2">
+          <button onClick={() => setShowBulk(!showBulk)} className="flex items-center gap-2 border border-zinc-300 text-zinc-700 px-4 py-2 rounded-lg text-sm hover:bg-zinc-50">
+            <Users className="w-4 h-4" /> Bulk Generate
+          </button>
+          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">
+            <Plus className="w-4 h-4" /> Generate Payslip
+          </button>
+        </div>
       </div>
+
+      {showBulk && (
+        <div className="bg-white rounded-xl border border-zinc-200 p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-zinc-900">Bulk Generate Payslips</h2>
+            <button onClick={() => { setShowBulk(false); setBulkResult(null); }}><X className="w-4 h-4 text-zinc-400" /></button>
+          </div>
+          <p className="text-sm text-zinc-500 mb-4">Generates payslips for all <strong>active employees</strong> who have a basic salary set. Employees without salary are skipped.</p>
+          <div className="grid grid-cols-4 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-1">Month</label>
+              <select value={bulkForm.month} onChange={e => setBulkForm({...bulkForm, month: Number(e.target.value)})} className={ic}>
+                {MONTHS.map((m, i) => <option key={i} value={i+1}>{m}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-1">Year</label>
+              <input type="number" value={bulkForm.year} onChange={e => setBulkForm({...bulkForm, year: Number(e.target.value)})} className={ic} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-1">Default Basic (₹) <span className="text-zinc-400 font-normal">for employees without salary</span></label>
+              <input type="number" value={bulkForm.defaultBasic} onChange={e => setBulkForm({...bulkForm, defaultBasic: e.target.value})} className={ic} placeholder="e.g. 25000" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-1">Status</label>
+              <select value={bulkForm.status} onChange={e => setBulkForm({...bulkForm, status: e.target.value})} className={ic}>
+                {["DRAFT","PUBLISHED","PAID"].map(s => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <button onClick={async () => {
+              setBulkLoading(true);
+              const res = await fetch("/api/payslips/bulk", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bulkForm),
+              });
+              const data = await res.json();
+              setBulkResult(data);
+              setBulkLoading(false);
+              if (data.created > 0) {
+                fetch("/api/payslips").then(r => r.json()).then(setPayslips).catch(() => {});
+              }
+            }} disabled={bulkLoading} className="bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50">
+              {bulkLoading ? `Generating...` : `Generate for All Active Employees`}
+            </button>
+            <button onClick={() => { setShowBulk(false); setBulkResult(null); }} className="border border-zinc-300 text-zinc-700 px-4 py-2 rounded-lg text-sm">Cancel</button>
+          </div>
+          {bulkResult && (
+            <div className={`mt-4 rounded-lg p-4 text-sm ${bulkResult.errors.length > 0 ? "bg-amber-50 border border-amber-200" : "bg-green-50 border border-green-200"}`}>
+              <p className="font-medium">✅ {bulkResult.created} payslips generated · ⏭️ {bulkResult.skipped} skipped</p>
+              {bulkResult.errors.length > 0 && <ul className="text-xs text-amber-700 mt-2">{bulkResult.errors.map((e, i) => <li key={i}>• {e}</li>)}</ul>}
+            </div>
+          )}
+        </div>
+      )}
 
       {showForm && (
         <div className="bg-white rounded-xl border border-zinc-200 p-6 mb-6">
