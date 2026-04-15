@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { MapPin, Plus, Pencil, Trash2, X } from "lucide-react";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Office { id: string; name: string; address: string | null; latitude: number; longitude: number; radius: number; isActive: boolean; }
 
@@ -52,7 +51,6 @@ export default function OfficeLocationsPage() {
 
   return (
     <div className="p-8">
-      <PeopleSubNav />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">Office Locations</h1>

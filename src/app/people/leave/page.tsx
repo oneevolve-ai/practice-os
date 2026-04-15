@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Plus, CalendarOff, CheckCircle, XCircle, Clock, CalendarCheck, CalendarPlus, Users, Settings } from "lucide-react";
 import { format } from "date-fns";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 import { TeamOnLeave } from "@/components/people/team-on-leave";
 
 interface Leave {
@@ -54,7 +53,6 @@ export default function LeavePage() {
 
   return (
     <div className="p-8">
-      <PeopleSubNav />
       <div className="flex items-center justify-between mb-6">
         <div><h1 className="text-2xl font-bold text-zinc-900">Leave Management</h1><p className="text-zinc-500 mt-1">Manage leave applications</p></div>
         <div className="flex items-center gap-2">

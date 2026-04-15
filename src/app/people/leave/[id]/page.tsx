@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 import { format } from "date-fns";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Leave {
   id: string; leaveType: string; startDate: string; endDate: string;
@@ -49,7 +48,6 @@ export default function LeaveDetailPage() {
 
   return (
     <div className="p-8 max-w-3xl">
-      <PeopleSubNav />
       <Link href="/people/leave" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to Leave
       </Link>

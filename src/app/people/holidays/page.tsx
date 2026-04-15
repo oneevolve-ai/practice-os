@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Calendar, Plus, Pencil, Trash2, X, Sparkles } from "lucide-react";
 import { format } from "date-fns";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Holiday {
   id: string;
@@ -77,7 +76,6 @@ export default function HolidaysPage() {
 
   return (
     <div className="p-8">
-      <PeopleSubNav />
 
       <div className="flex items-center justify-between mb-6">
         <div>

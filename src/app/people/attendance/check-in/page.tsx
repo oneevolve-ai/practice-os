@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Clock, MapPin, Camera, CheckCircle, XCircle } from "lucide-react";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Employee { id: string; name: string; }
 interface AttRecord { checkIn: string | null; checkOut: string | null; workHours: number | null; status: string; lateArrival: boolean; checkInLocation: string | null; }
@@ -134,7 +133,6 @@ export default function CheckInPage() {
 
   return (
     <div className="p-8 max-w-lg">
-      <PeopleSubNav />
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-zinc-900">Self Check-In</h1>
         <Link href="/people/attendance/offices" className="text-xs text-zinc-500 hover:text-zinc-700 flex items-center gap-1">

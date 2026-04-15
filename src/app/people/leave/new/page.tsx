@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, AlertTriangle } from "lucide-react";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Employee { id: string; name: string; }
 interface Balance { type: string; allocation: string | number; used: number; remaining: string | number; minAdvanceDays: number; maxConsecutive: number; }
@@ -107,7 +106,6 @@ export default function NewLeavePage() {
 
   return (
     <div className="p-8 max-w-2xl">
-      <PeopleSubNav />
       <Link href="/people/leave" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to Leave
       </Link>

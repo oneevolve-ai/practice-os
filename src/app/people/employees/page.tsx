@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Plus, Users, Search, UserCheck, Building2, Award, Upload, Download, X } from "lucide-react";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Employee {
   id: string;
@@ -114,7 +113,6 @@ export default function EmployeesPage() {
 
   return (
     <div className="p-8">
-      <PeopleSubNav />
 
       <div className="flex items-center justify-between mb-6">
         <div>

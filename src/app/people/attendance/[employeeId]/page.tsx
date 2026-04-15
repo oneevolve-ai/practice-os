@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, format, isSameMonth, isSameDay } from "date-fns";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface AttRecord { date: string; status: string; checkIn: string | null; checkOut: string | null; workHours: number | null; lateArrival: boolean; }
 interface EmployeeInfo { name: string; department: { name: string } | null; }
@@ -47,7 +46,6 @@ export default function EmployeeAttendancePage() {
 
   return (
     <div className="p-8">
-      <PeopleSubNav />
       <Link href="/people/attendance" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to Attendance
       </Link>

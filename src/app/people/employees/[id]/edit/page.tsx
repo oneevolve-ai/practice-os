@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 const PROJECT_ROLES = [
   { value: "ARCHITECT", label: "Architect" }, { value: "ENGINEER", label: "Engineer" },
@@ -103,7 +102,6 @@ export default function EditEmployeePage() {
 
   return (
     <div className="p-8 max-w-3xl">
-      <PeopleSubNav />
       <Link href={`/people/employees/${id}`} className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 mb-6"><ArrowLeft className="w-4 h-4" /> Back to Details</Link>
       <h1 className="text-2xl font-bold text-zinc-900 mb-6">Edit Employee</h1>
 

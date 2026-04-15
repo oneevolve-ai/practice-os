@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Clock, Save, LogIn, Users, UserX, Home, CalendarOff, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Employee { id: string; name: string; department: { name: string } | null; }
 interface AttRecord { id: string; employeeId: string; status: string; checkIn: string | null; checkOut: string | null; workHours: number | null; notes: string | null; isLeave: boolean; lateArrival: boolean; }
@@ -84,7 +83,6 @@ export default function AttendancePage() {
 
   return (
     <div className="p-8">
-      <PeopleSubNav />
       <div className="flex items-center justify-between mb-6">
         <div><h1 className="text-2xl font-bold text-zinc-900">Attendance</h1><p className="text-zinc-500 mt-1">Daily attendance tracking</p></div>
         <div className="flex items-center gap-3">

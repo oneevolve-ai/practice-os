@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Pencil, Trash2, Upload, Download, Paperclip, X } from "lucide-react";
 import { format, differenceInYears } from "date-fns";
-import { PeopleSubNav } from "@/components/people/people-sub-nav";
 
 interface Doc { id: string; docType: string; fileName: string; filePath: string; fileSize: number; uploadedAt: string; }
 interface Reportee { id: string; name: string; designation: string | null; }
@@ -83,7 +82,6 @@ export default function EmployeeDetailPage() {
 
   return (
     <div className="p-8 max-w-3xl">
-      <PeopleSubNav />
       <Link href="/people/employees" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 mb-6"><ArrowLeft className="w-4 h-4" /> Back to Employees</Link>
 
       <div className="flex items-start justify-between mb-6">
