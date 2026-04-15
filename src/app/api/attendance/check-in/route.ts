@@ -45,6 +45,22 @@ export async function POST(request: Request) {
         });
         return NextResponse.json(created, { status: 201 });
       }
+    } else if (action === "WFH") {
+      const data = {
+        checkIn: timeStr,
+        status: "WFH",
+        lateArrival: false,
+        checkInLocation: "Work From Home",
+      };
+      if (existing) {
+        const updated = await prisma.attendance.update({ where: { id: existing.id }, data });
+        return NextResponse.json(updated);
+      } else {
+        const created = await prisma.attendance.create({
+          data: { employeeId, date: today, ...data },
+        });
+        return NextResponse.json(created, { status: 201 });
+      }
     } else if (action === "CHECK_OUT") {
       if (!existing) {
         return NextResponse.json({ error: "No check-in found for today" }, { status: 400 });

@@ -244,14 +244,27 @@ export default function CheckInPage() {
               {!selfieData && (
                 <p className="text-xs text-zinc-400 text-center">Please take a selfie first to enable check-in</p>
               )}
-              {!todayRecord?.checkIn ? (
-                <button
-                  onClick={() => handleAction("CHECK_IN")}
+              {todayRecord?.status === "WFH" ? (
+                <div className="text-center text-blue-600 font-medium py-3">
+                  🏠 WFH marked for today at {todayRecord.checkIn ? new Date(todayRecord.checkIn).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }) : ""}
+                </div>
+              ) : !todayRecord?.checkIn ? (
+                <>
+                  <button
+                    onClick={() => handleAction("WFH")}
+                    disabled={loading}
+                    className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 mb-2"
+                  >
+                    🏠 Mark WFH
+                  </button>
+                  <button
+                    onClick={() => handleAction("CHECK_IN")}
                   disabled={loading || !canCheckIn}
                   className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Checking In..." : "✓ Check In"}
                 </button>
+                </>
               ) : !todayRecord?.checkOut ? (
                 <button
                   onClick={() => handleAction("CHECK_OUT")}
