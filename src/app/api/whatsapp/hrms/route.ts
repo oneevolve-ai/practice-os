@@ -77,7 +77,7 @@ async function handleLocation(phone: string, latitude: number, longitude: number
       data: {
         employeeId: employee.id,
         date: now,
-        checkIn: now,
+        checkIn: now.toISOString(),
         status: "PRESENT",
         notes: `WhatsApp check-in — ${nearestOffice.name}`,
       },
