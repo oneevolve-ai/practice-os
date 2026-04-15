@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
   const employees = await prisma.employee.findMany({
     where: { status: "ACTIVE" },
-    select: { id: true, name: true, basicSalary: true, hra: true, allowances: true },
+    select: { id: true, name: true, basicSalary: true, hra: true, allowances: true, department: { select: { defaultBasicMin: true, defaultBasicMax: true } } },
   });
 
   const created: string[] = [];
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     });
     if (existing) { skipped.push(emp.name); continue; }
 
-    const basic = emp.basicSalary || Number(defaultBasic) || 0;
+    const basic = emp.basicSalary || Number(defaultBasic) || (emp.department?.defaultBasicMin ? Math.round((emp.department.defaultBasicMin + (emp.department.defaultBasicMax || emp.department.defaultBasicMin)) / 2) : 0);
     if (basic === 0) { skipped.push(`${emp.name} (no salary)`); continue; }
 
     const hra = emp.hra || Number(defaultHra) || Math.round(basic * 0.4);
