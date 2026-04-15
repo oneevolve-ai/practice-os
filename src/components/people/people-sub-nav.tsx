@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, Building2, CalendarOff, Clock, Calendar, FileText } from "lucide-react";
+import { Users, Building2, CalendarOff, Clock, Calendar, FileText, RefreshCw } from "lucide-react";
 
 const sections = [
   { name: "Employees", href: "/people/employees", icon: Users },
   { name: "Departments", href: "/people/departments", icon: Building2 },
   { name: "Leave", href: "/people/leave", icon: CalendarOff },
+  { name: "Leave Calendar", href: "/people/leave/calendar", icon: Calendar },
+  { name: "Carry Forward", href: "/people/leave/carry-forward", icon: RefreshCw },
   { name: "Attendance", href: "/people/attendance", icon: Clock },
   { name: "Holidays", href: "/people/holidays", icon: Calendar },
   { name: "Payslips", href: "/people/payslips", icon: FileText },

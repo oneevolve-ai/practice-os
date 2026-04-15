@@ -166,7 +166,8 @@ model Employee {
   attendance       Attendance[]
   documents        EmployeeDocument[]
   regularizationRequests RegularizationRequest[]
-  payslips         Payslip[]
+  payslips              Payslip[]
+  leaveCarryForwards    LeaveCarryForward[]
 }
 
 model EmployeeDocument {
@@ -664,4 +665,16 @@ model Payslip {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   employee        Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model LeaveCarryForward {
+  id            String   @id @default(cuid())
+  employeeId    String
+  leaveType     String
+  fromYear      Int
+  toYear        Int
+  daysCarried   Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  employee      Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }

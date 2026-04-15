@@ -20,7 +20,7 @@ const statusColors: Record<string, string> = {
 };
 
 const typeLabels: Record<string, string> = {
-  CASUAL: "Casual", SICK: "Sick", EARNED: "Earned", UNPAID: "Unpaid", COMP_OFF: "Comp Off",
+  CASUAL: "Casual", SICK: "Sick", EARNED: "Earned", UNPAID: "Unpaid", COMP_OFF: "Comp Off", PRIVILEGE: "Privilege",
 };
 
 export default function LeaveDetailPage() {
@@ -81,6 +81,9 @@ export default function LeaveDetailPage() {
           <div className="flex gap-2">
             <button onClick={() => handleAction("APPROVED")} className="inline-flex items-center gap-1.5 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700">
               <CheckCircle className="w-4 h-4" /> Approve
+            </button>
+            <button onClick={() => handleAction("CANCELLED")} className="inline-flex items-center gap-1.5 border border-zinc-300 text-zinc-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-zinc-50">
+              Cancel Leave
             </button>
             <button onClick={() => handleAction("REJECTED")} className="inline-flex items-center gap-1.5 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700">
               <XCircle className="w-4 h-4" /> Reject
