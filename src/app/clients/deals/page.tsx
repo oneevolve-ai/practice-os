@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
@@ -24,6 +25,7 @@ export default function DealsPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/clients" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">Business Development Pipeline</h1>

@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation";
 
 interface Deal { id: string; title: string; stage: string; value: number | null; clientId: string; clientName: string; notes: string | null; closeDate: string | null; probability: number | null; createdAt: string; }
 
-const PIPELINE_STAGES = [
+const CYCLE1 = [
   { key: "LEAD", label: "Lead", prob: 10, color: "bg-zinc-100 text-zinc-700", bar: "bg-zinc-400" },
   { key: "SHORTLISTED", label: "Shortlisted", prob: 25, color: "bg-blue-100 text-blue-700", bar: "bg-blue-500" },
-  { key: "PRESENTATION", label: "Presentation", prob: 40, color: "bg-purple-100 text-purple-700", bar: "bg-purple-500" },
-  { key: "PROJECT_DEAL", label: "Project Deal", prob: 60, color: "bg-indigo-100 text-indigo-700", bar: "bg-indigo-500" },
+  { key: "PRESENTATION", label: "Organisations", prob: 40, color: "bg-purple-100 text-purple-700", bar: "bg-purple-500" },
+];
+const CYCLE2 = [
+  { key: "PROJECT_DEAL", label: "Presentation", prob: 60, color: "bg-indigo-100 text-indigo-700", bar: "bg-indigo-500" },
   { key: "PROPOSAL_SENT", label: "Proposal Sent", prob: 75, color: "bg-yellow-100 text-yellow-700", bar: "bg-yellow-500" },
   { key: "WON", label: "Won", prob: 100, color: "bg-green-100 text-green-700", bar: "bg-green-500" },
 ];
+const PIPELINE_STAGES = [...CYCLE1, ...CYCLE2];
 
 const NEXT_STAGE: Record<string, string> = {
   LEAD: "SHORTLISTED",
@@ -149,8 +152,10 @@ export default function PipelinePage() {
 
       {/* Pipeline Progress Bar */}
       <div className="bg-white rounded-xl border border-zinc-200 p-4 mb-6">
-        <div className="flex items-center gap-1 mb-3">
-          {PIPELINE_STAGES.map((stage, idx) => (
+        {/* Cycle 1 */}
+        <p className="text-xs font-medium text-zinc-400 uppercase tracking-widest mb-2">Cycle 1 — Qualification</p>
+        <div className="flex items-center gap-1 mb-4">
+          {CYCLE1.map((stage, idx) => (
             <div key={stage.key} className="flex items-center flex-1">
               <button onClick={() => setActiveStage(stage.key)}
                 className={`flex-1 text-center py-2 px-1 rounded-lg text-xs font-medium transition-all ${activeStage === stage.key ? `${stage.color} ring-2 ring-offset-1 ring-current` : "text-zinc-400 hover:bg-zinc-50"}`}>
@@ -158,7 +163,22 @@ export default function PipelinePage() {
                 <div>{stage.label}</div>
                 <div className="text-[10px] opacity-70">{stage.prob}%</div>
               </button>
-              {idx < PIPELINE_STAGES.length - 1 && <ChevronRight className="w-3 h-3 text-zinc-300 flex-shrink-0" />}
+              {idx < CYCLE1.length - 1 && <ChevronRight className="w-3 h-3 text-zinc-300 flex-shrink-0" />}
+            </div>
+          ))}
+        </div>
+        {/* Cycle 2 */}
+        <p className="text-xs font-medium text-zinc-400 uppercase tracking-widest mb-2">Cycle 2 — Conversion</p>
+        <div className="flex items-center gap-1 mb-3">
+          {CYCLE2.map((stage, idx) => (
+            <div key={stage.key} className="flex items-center flex-1">
+              <button onClick={() => setActiveStage(stage.key)}
+                className={`flex-1 text-center py-2 px-1 rounded-lg text-xs font-medium transition-all ${activeStage === stage.key ? `${stage.color} ring-2 ring-offset-1 ring-current` : "text-zinc-400 hover:bg-zinc-50"}`}>
+                <div className="font-bold text-base">{deals.filter(d => d.stage === stage.key).length}</div>
+                <div>{stage.label}</div>
+                <div className="text-[10px] opacity-70">{stage.prob}%</div>
+              </button>
+              {idx < CYCLE2.length - 1 && <ChevronRight className="w-3 h-3 text-zinc-300 flex-shrink-0" />}
             </div>
           ))}
         </div>

@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 import { useEffect, useState } from "react";
 import { Plus, Phone, Mail, Users, MapPin, FileText } from "lucide-react";
 
@@ -46,6 +47,7 @@ export default function ActivityPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/clients" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">CRM Activity</h1>

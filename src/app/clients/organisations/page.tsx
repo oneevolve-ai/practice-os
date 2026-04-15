@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Plus, Building2, Search, Upload, Download, X } from "lucide-react";
@@ -37,6 +38,7 @@ export default function OrganisationsPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/clients" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">Organisations</h1>
