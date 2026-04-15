@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { BackButton } from "@/components/back-button";
 import { Plus, Users, Search, UserCheck, Building2, Award, Upload, Download, X } from "lucide-react";
 
 interface Employee {
@@ -114,6 +115,7 @@ export default function EmployeesPage() {
   return (
     <div className="p-8">
 
+      <BackButton href="/people" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">Employees</h1>

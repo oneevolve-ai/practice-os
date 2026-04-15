@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 import { useEffect, useState } from "react";
 import { Building2, Users, Pencil, X, Check } from "lucide-react";
 
@@ -33,6 +34,7 @@ export default function DepartmentsPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/people" />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-zinc-900">Departments</h1>
         <p className="text-zinc-500 text-sm">{departments.length} departments · Set salary ranges per department</p>

@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 import { useEffect, useState } from "react";
 import { Plus, X, CheckCircle2, Circle, LogOut } from "lucide-react";
 
@@ -92,6 +93,7 @@ export default function ExitPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/people" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900">Exit Management</h1>

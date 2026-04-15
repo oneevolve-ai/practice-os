@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 
 import { useEffect, useState, useCallback } from "react";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
@@ -36,6 +37,7 @@ export default function RegularizationPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/people/attendance" />
       <div className="flex items-center justify-between mb-6">
         <div><h1 className="text-2xl font-bold text-zinc-900">Regularization Requests</h1><p className="text-zinc-500 mt-1">Review attendance correction requests</p></div>
       </div>

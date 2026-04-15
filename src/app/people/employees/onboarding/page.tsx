@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 import { useEffect, useState } from "react";
 import { CheckCircle2, Circle, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -43,6 +44,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/people" />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-zinc-900">Employee Onboarding</h1>
         <p className="text-zinc-500 text-sm">Track onboarding checklist for new joiners</p>

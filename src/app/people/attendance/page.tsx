@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
@@ -83,6 +84,7 @@ export default function AttendancePage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/people" />
       <div className="flex items-center justify-between mb-6">
         <div><h1 className="text-2xl font-bold text-zinc-900">Attendance</h1><p className="text-zinc-500 mt-1">Daily attendance tracking</p></div>
         <div className="flex items-center gap-3">

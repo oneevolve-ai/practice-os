@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/back-button";
 
 import { useEffect, useState } from "react";
 import { Calendar, Plus, Pencil, Trash2, X, Sparkles } from "lucide-react";
@@ -76,6 +77,7 @@ export default function HolidaysPage() {
 
   return (
     <div className="p-8">
+      <BackButton href="/people" />
 
       <div className="flex items-center justify-between mb-6">
         <div>
