@@ -141,6 +141,12 @@ export async function POST(req: NextRequest) {
 
     // State machine
     switch (session.state) {
+      case "AWAITING_CHECKOUT_LOCATION":
+        await sendWhatsApp(phone, `📍 Please share your *live location* to check out.
+
+Tap 📎 → Location → *Send Current Location*`);
+        break;
+
       case "AWAITING_LOCATION":
         await sendWhatsApp(phone,
           `📍 Please share your *live location* to log attendance.\n\nTap the 📎 icon → Location → *Send Current Location*`
