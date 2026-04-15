@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 function PayslipPDF({ payslip }: { payslip: any }) {
-  const fmt = (n: number) => `₹${Number(n).toLocaleString("en-IN")}`;
+  const fmt = (n: number) => `Rs.${Number(n).toLocaleString("en-IN")}`;
   const emp = payslip.employee;
   const period = `${MONTHS[payslip.month - 1]} ${payslip.year}`;
 
