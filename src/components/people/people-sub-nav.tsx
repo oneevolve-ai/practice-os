@@ -13,6 +13,7 @@ const navGroups = [
       { name: "Departments", href: "/people/departments", icon: Building2 },
       { name: "Onboarding", href: "/people/employees/onboarding", icon: ClipboardList },
       { name: "Performance", href: "/people/performance", icon: TrendingUp },
+      { name: "Letters", href: "/people/letters", icon: FileText },
     ],
   },
   {
