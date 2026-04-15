@@ -168,6 +168,7 @@ model Employee {
   regularizationRequests RegularizationRequest[]
   payslips              Payslip[]
   leaveCarryForwards    LeaveCarryForward[]
+  leaveEncashments      LeaveEncashment[]
 }
 
 model EmployeeDocument {
@@ -674,6 +675,21 @@ model LeaveCarryForward {
   fromYear      Int
   toYear        Int
   daysCarried   Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  employee      Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model LeaveEncashment {
+  id            String   @id @default(cuid())
+  employeeId    String
+  leaveType     String
+  days          Float
+  perDayAmount  Float
+  totalAmount   Float
+  year          Int
+  status        String   @default("PENDING")
+  notes         String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   employee      Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)

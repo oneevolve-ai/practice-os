@@ -23,7 +23,7 @@ export default function LeaveCarryForwardPage() {
 
   async function fetchRecords() {
     setLoading(true);
-    fetch(`/api/leave/carry-forward?year=${viewYear}`).then(r => r.json()).then(setRecords).finally(() => setLoading(false));
+    fetch(`/api/leave/carry-forward?year=${viewYear}`).then(r => r.json()).then(data => setRecords(Array.isArray(data) ? data : [])).catch(() => setRecords([])).finally(() => setLoading(false));
   }
 
   useEffect(() => { fetchRecords(); }, [viewYear]);
