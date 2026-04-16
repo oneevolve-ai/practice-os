@@ -25,11 +25,11 @@ export default function NewTravelRequestPage() {
   const [destination, setDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [selectedOffer, setSelectedOffer] = useState<unknown>(null);
+  const [selectedOffer, setSelectedOffer] = useState<unknown[]>([]);
   const costRef = useRef<HTMLInputElement>(null);
 
   function handleOfferSelect(price: number, offer: unknown) {
-    setSelectedOffer(offer);
+    setSelectedOffer(prev => Array.isArray(prev) ? [...prev, offer] : [offer]);
     if (costRef.current) {
       costRef.current.value = price.toString();
     }
@@ -52,7 +52,7 @@ export default function NewTravelRequestPage() {
       travelMode: form.get("travelMode") || "FLIGHT",
       purpose: form.get("purpose") || "",
       estimatedCost: parseFloat(form.get("estimatedCost") as string) || 0,
-      selectedOffer: selectedOffer || null,
+      selectedOffer: selectedOffer.length > 0 ? selectedOffer : null,
       notes: form.get("notes") || "",
     };
 
