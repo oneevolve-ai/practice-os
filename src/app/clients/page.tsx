@@ -52,22 +52,6 @@ export default function CRMDashboard() {
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        {[
-          { label: "Total Organisations", value: totalClients, icon: Users, color: "text-zinc-700" },
-          { label: "Won Value", value: fmt(wonValue), icon: TrendingUp, color: "text-green-600" },
-          { label: "Pipeline Value", value: fmt(pipelineValue), icon: FileText, color: "text-blue-600" },
-          { label: "Conversion Rate", value: `${conversionRate}%`, icon: Activity, color: "text-purple-600" },
-        ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl border border-zinc-200 p-5">
-            <s.icon className={`w-5 h-5 ${s.color} mb-2`} />
-            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-            <p className="text-xs text-zinc-500 mt-1">{s.label}</p>
-          </div>
-        ))}
-      </div>
-
       {/* Quick Nav Cards */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         <Link href="/clients/organisations" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
@@ -90,6 +74,22 @@ export default function CRMDashboard() {
           <p className="text-sm font-medium text-zinc-700">Proposals</p>
           <p className="text-xs text-zinc-400 mt-1">Total proposals</p>
         </Link>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {[
+          { label: "Total Organisations", value: totalClients, icon: Users, color: "text-zinc-700" },
+          { label: "Won Value", value: fmt(wonValue), icon: TrendingUp, color: "text-green-600" },
+          { label: "Pipeline Value", value: fmt(pipelineValue), icon: FileText, color: "text-blue-600" },
+          { label: "Conversion Rate", value: `${conversionRate}%`, icon: Activity, color: "text-purple-600" },
+        ].map(s => (
+          <div key={s.label} className="bg-white rounded-xl border border-zinc-200 p-5">
+            <s.icon className={`w-5 h-5 ${s.color} mb-2`} />
+            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+            <p className="text-xs text-zinc-500 mt-1">{s.label}</p>
+          </div>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
