@@ -113,7 +113,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Add Employee", href: "/people/employees", color: "bg-purple-600" },
-          { label: "New Invoice", href: "/money/new", color: "bg-green-600" },
+          { label: "New Invoice", href: "/money/invoices/new", color: "bg-green-600" },
           { label: "Register Visitor", href: "/visitors/new", color: "bg-teal-600" },
           { label: "New Project", href: "/projects/new", color: "bg-indigo-600" },
           { label: "Add Organisation", href: "/clients/organisations/new", color: "bg-orange-600" },
