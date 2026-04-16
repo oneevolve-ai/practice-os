@@ -270,13 +270,6 @@ export function TravelSearch({
                       <div className="flex gap-2">
                         <button
                           type="button"
-                          onClick={() => { onSelect(offer.price, offer.rawOffer); }}
-                          className="text-xs bg-green-600 text-white px-3 py-1.5 rounded hover:bg-green-700"
-                        >
-                          Select
-                        </button>
-                        <button
-                          type="button"
                           onClick={() => setSelectedOffers(prev => prev.filter(o => o.id !== offer.id))}
                           className="text-xs text-zinc-400 hover:text-red-500 px-2"
                         >
@@ -289,13 +282,22 @@ export function TravelSearch({
               </tbody>
             </table>
           </div>
-          {selectedOffers.length > 1 && (
-            <div className="px-4 py-2 bg-blue-50 border-t border-blue-100">
+          <div className="px-4 py-3 bg-zinc-50 border-t border-zinc-200 flex items-center justify-between">
+            {selectedOffers.length > 1 && (
               <p className="text-xs text-blue-600">
-                💡 Best price: <strong>₹{Math.min(...selectedOffers.map(o => o.price)).toLocaleString()}</strong> — {selectedOffers.find(o => o.price === Math.min(...selectedOffers.map(x => x.price)))?.airline}
+                💡 Best: <strong>₹{Math.min(...selectedOffers.map(o => o.price)).toLocaleString()}</strong> — {selectedOffers.find(o => o.price === Math.min(...selectedOffers.map(x => x.price)))?.airline}
               </p>
-            </div>
-          )}
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                selectedOffers.forEach(o => onSelect(o.price, o));
+              }}
+              className="ml-auto text-sm bg-zinc-900 text-white px-4 py-2 rounded-lg hover:bg-zinc-700"
+            >
+              Confirm {selectedOffers.length} Flight{selectedOffers.length > 1 ? "s" : ""}
+            </button>
+          </div>
         </div>
       )}
     </div>
