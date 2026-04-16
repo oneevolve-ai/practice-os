@@ -58,7 +58,7 @@ export default function PipelineClient() {
       </button>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-zinc-900">BD Pipeline</h1>
-        <button onClick={()=>{setShowForm(!showForm);setForm({...form,stage:"LEAD"});}} className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">
+        <button onClick={()=>{setShowForm(true);setForm({clientId:"",title:"",stage:"LEAD",value:"",notes:"",closeDate:"",probability:""});}} className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">
           <Plus className="w-4 h-4" /> Add Lead
         </button>
       </div>
@@ -121,7 +121,7 @@ export default function PipelineClient() {
         </div>
       </div>
       <div className="flex justify-end mb-4">
-        <button onClick={()=>{setShowForm(true);setForm({...form,stage:"PROJECT_DEAL"});}} className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">
+        <button onClick={()=>{setShowForm(true);setForm({clientId:"",title:"",stage:"PROJECT_DEAL",value:"",notes:"",closeDate:"",probability:""});}} className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-700">
           <Plus className="w-4 h-4" /> Add Deal
         </button>
       </div>
