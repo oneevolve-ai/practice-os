@@ -32,8 +32,11 @@ function formatDuration(iso: string) {
 }
 
 function formatTime(iso: string) {
-  const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso || "--";
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  } catch { return iso || "--"; }
 }
 
 export function TravelSearch({
