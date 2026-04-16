@@ -1,97 +1,53 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// Dynamic import to avoid issues if amadeus package isn't configured
-async function getAmadeusClient() {
-  const Amadeus = (await import("amadeus")).default;
-  return new Amadeus({
-    clientId: process.env.AMADEUS_CLIENT_ID,
-    clientSecret: process.env.AMADEUS_CLIENT_SECRET,
-    hostname: "test", // Use 'production' for live data
-  });
-}
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const { origin, destination, departureDate, returnDate, travelMode } = body;
 
-export async function POST(request: Request) {
+  if (travelMode !== "flight") {
+    return NextResponse.json({ offers: [], message: "Flight search only" });
+  }
+
   try {
-    const body = await request.json();
-    const { origin, destination, departureDate, returnDate, travelMode, adults } = body;
+    const url = new URL("https://flights-sky.p.rapidapi.com/flights/search-one-way");
+    url.searchParams.set("fromEntityId", origin.toUpperCase());
+    url.searchParams.set("toEntityId", destination.toUpperCase());
+    url.searchParams.set("departDate", departureDate);
+    url.searchParams.set("cabinClass", "economy");
+    url.searchParams.set("adults", "1");
+    url.searchParams.set("currency", "INR");
 
-    if (!origin || !destination || !departureDate) {
-      return NextResponse.json(
-        { error: "Origin, destination, and departure date are required" },
-        { status: 400 }
-      );
-    }
+    const res = await fetch(url.toString(), {
+      headers: {
+        "x-rapidapi-host": "flights-sky.p.rapidapi.com",
+        "x-rapidapi-key": process.env.RAPIDAPI_KEY || "14c0c3da0cmsh945240a820de1cep1f231cjsnc0259a9c1312",
+      },
+    });
 
-    // Only flights are supported via Amadeus
-    if (travelMode && travelMode !== "FLIGHT") {
-      return NextResponse.json({
-        offers: [],
-        message: `Live search is currently available for flights only. For ${travelMode.toLowerCase()} travel, please enter the estimated cost manually.`,
-      });
-    }
+    const data = await res.json();
+    const itineraries = data?.data?.itineraries || [];
 
-    if (!process.env.AMADEUS_CLIENT_ID || !process.env.AMADEUS_CLIENT_SECRET) {
-      return NextResponse.json(
-        { error: "Amadeus API is not configured. Please add AMADEUS_CLIENT_ID and AMADEUS_CLIENT_SECRET to your .env file." },
-        { status: 503 }
-      );
-    }
-
-    const amadeus = await getAmadeusClient();
-
-    const searchParams: Record<string, string | number> = {
-      originLocationCode: origin.toUpperCase(),
-      destinationLocationCode: destination.toUpperCase(),
-      departureDate,
-      adults: adults || 1,
-      max: 10,
-      currencyCode: "USD",
-    };
-
-    if (returnDate) {
-      searchParams.returnDate = returnDate;
-    }
-
-    const response = await amadeus.shopping.flightOffersSearch.get(searchParams);
-
-    const offers = (response.data || []).map((offer: Record<string, unknown>, index: number) => {
-      const itineraries = offer.itineraries as Array<{
-        duration: string;
-        segments: Array<{
-          departure: { iataCode: string; at: string };
-          arrival: { iataCode: string; at: string };
-          carrierCode: string;
-          number: string;
-        }>;
-      }>;
-      const price = offer.price as { total: string; currency: string };
-      const outbound = itineraries[0];
-      const firstSeg = outbound.segments[0];
-      const lastSeg = outbound.segments[outbound.segments.length - 1];
-
+    const offers = itineraries.slice(0, 10).map((it: any, i: number) => {
+      const leg = it.legs?.[0];
+      const segment = leg?.segments?.[0];
       return {
-        id: index,
-        airline: firstSeg.carrierCode,
-        flightNumber: `${firstSeg.carrierCode}${firstSeg.number}`,
-        departureAirport: firstSeg.departure.iataCode,
-        departureTime: firstSeg.departure.at,
-        arrivalAirport: lastSeg.arrival.iataCode,
-        arrivalTime: lastSeg.arrival.at,
-        duration: outbound.duration,
-        stops: outbound.segments.length - 1,
-        price: parseFloat(price.total),
-        currency: price.currency,
-        rawOffer: offer,
+        id: i,
+        airline: leg?.carriers?.marketing?.[0]?.name || "Unknown",
+        flightNumber: segment?.flightNumber || "",
+        departureAirport: leg?.origin?.displayCode || origin,
+        departureTime: leg?.departure || "",
+        arrivalAirport: leg?.destination?.displayCode || destination,
+        arrivalTime: leg?.arrival || "",
+        duration: leg?.durationInMinutes ? `PT${Math.floor(leg.durationInMinutes/60)}H${leg.durationInMinutes%60}M` : "",
+        stops: leg?.stopCount || 0,
+        price: it.price?.raw || 0,
+        currency: "INR",
+        rawOffer: it,
       };
     });
 
-    return NextResponse.json({ offers });
-  } catch (error) {
-    console.error("Amadeus search error:", error);
-    const message = error instanceof Error ? error.message : String(error);
-    return NextResponse.json(
-      { error: `Flight search failed: ${message}` },
-      { status: 500 }
-    );
+    return NextResponse.json({ offers, message: offers.length === 0 ? "No flights found" : "" });
+  } catch (err: any) {
+    return NextResponse.json({ offers: [], message: "Search failed: " + err.message }, { status: 500 });
   }
 }
