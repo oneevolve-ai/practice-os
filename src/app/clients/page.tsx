@@ -50,12 +50,7 @@ export default function CRMDashboard() {
           <h1 className="text-2xl font-bold text-zinc-900">CRM Dashboard</h1>
           <p className="text-zinc-500 text-sm">Pipeline overview and activity</p>
         </div>
-        <div className="flex gap-2">
-          <Link href="/clients/organisations" className="border border-zinc-300 text-zinc-700 px-3 py-1.5 rounded-lg text-sm hover:bg-zinc-50">Organisations</Link>
-          <Link href="/clients/pipeline" className="border border-zinc-300 text-zinc-700 px-3 py-1.5 rounded-lg text-sm hover:bg-zinc-50">Pipeline</Link>
-          <Link href="/clients/activity" className="border border-zinc-300 text-zinc-700 px-3 py-1.5 rounded-lg text-sm hover:bg-zinc-50">Activity</Link>
-          <Link href="/clients/proposals" className="bg-zinc-900 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-zinc-700">Proposals</Link>
-        </div>
+      </div>
       </div>
 
       {/* KPI Cards */}
@@ -72,6 +67,30 @@ export default function CRMDashboard() {
             <p className="text-xs text-zinc-500 mt-1">{s.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* Quick Nav Cards */}
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <Link href="/clients/organisations" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
+          <p className="text-2xl font-bold text-zinc-900 mb-1">{totalClients}</p>
+          <p className="text-sm font-medium text-zinc-700">Organisations</p>
+          <p className="text-xs text-zinc-400 mt-1">View all clients</p>
+        </Link>
+        <Link href="/clients/pipeline" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
+          <p className="text-2xl font-bold text-blue-600 mb-1">{allDeals.filter(d => !["WON","LOST"].includes(d.stage)).length}</p>
+          <p className="text-sm font-medium text-zinc-700">Pipeline</p>
+          <p className="text-xs text-zinc-400 mt-1">Active deals</p>
+        </Link>
+        <Link href="/clients/activity" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
+          <p className="text-2xl font-bold text-purple-600 mb-1">{allDeals.length}</p>
+          <p className="text-sm font-medium text-zinc-700">Activity</p>
+          <p className="text-xs text-zinc-400 mt-1">Total deals logged</p>
+        </Link>
+        <Link href="/clients/proposals" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
+          <p className="text-2xl font-bold text-green-600 mb-1">{allProposals.length}</p>
+          <p className="text-sm font-medium text-zinc-700">Proposals</p>
+          <p className="text-xs text-zinc-400 mt-1">Total proposals</p>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
