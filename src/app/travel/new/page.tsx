@@ -50,7 +50,7 @@ export default function NewTravelRequestPage() {
       returnDate: form.get("returnDate"),
       returnTime: form.get("returnTime") || "",
       travelMode: form.get("travelMode") || "FLIGHT",
-      purpose: form.get("purpose"),
+      purpose: form.get("purpose") || "",
       estimatedCost: parseFloat(form.get("estimatedCost") as string) || 0,
       selectedOffer: selectedOffer || null,
       notes: form.get("notes") || "",

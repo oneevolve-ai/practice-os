@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         returnDate: new Date(body.returnDate),
         returnTime: body.returnTime || null,
         travelMode: body.travelMode || "FLIGHT",
-        purpose: body.purpose,
+        purpose: body.purpose || "",
         estimatedCost: body.estimatedCost || 0,
         selectedOffer: body.selectedOffer || null,
         notes: body.notes || null,

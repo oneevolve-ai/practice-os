@@ -194,20 +194,23 @@ export function TravelSearch({
                           <p className="text-lg font-semibold text-zinc-900">
                             ₹{offer.price.toLocaleString()}
                           </p>
-                          <button
-                            type="button"
-                            onClick={() => toggleSelect(offer)}
-                            className={`mt-1 text-xs px-3 py-1 rounded transition-colors ${selectedOffers.find(o=>o.id===offer.id) ? "bg-green-600 text-white" : "bg-blue-600 text-white"}`}
-                          >
-                            {selectedOffers.find(o=>o.id===offer.id) ? "✓ Added" : "Add to Compare"}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => { onSelect(offer.price, offer.rawOffer); setOpen(false); }}
-                            className="mt-1 text-xs bg-zinc-900 text-white px-3 py-1 rounded hover:bg-blue-700"
-                          >
-                            Select
-                          </button>
+                          <label className="flex items-center gap-2 mt-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={!!selectedOffers.find(o=>o.id===offer.id)}
+                              onChange={() => {
+                                if (selectedOffers.find(o=>o.id===offer.id)) {
+                                  toggleSelect(offer);
+                                } else if (selectedOffers.length < 5) {
+                                  toggleSelect(offer);
+                                }
+                              }}
+                              className="w-4 h-4 accent-blue-600"
+                            />
+                            <span className="text-xs text-zinc-600">
+                              {selectedOffers.find(o=>o.id===offer.id) ? "✓ Selected" : selectedOffers.length >= 5 ? "Max 5 reached" : "Select"}
+                            </span>
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -223,7 +226,7 @@ export function TravelSearch({
       {selectedOffers.length > 0 && (
         <div className="mt-6 border border-zinc-200 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between bg-zinc-50 px-4 py-3 border-b border-zinc-200">
-            <h3 className="font-semibold text-zinc-900 text-sm">Comparing {selectedOffers.length} flight{selectedOffers.length > 1 ? "s" : ""}</h3>
+            <h3 className="font-semibold text-zinc-900 text-sm">Selected Flights ({selectedOffers.length}/5)</h3>
             <button onClick={() => setSelectedOffers([])} className="text-xs text-zinc-400 hover:text-zinc-600">Clear all</button>
           </div>
           <div className="overflow-x-auto">
@@ -268,7 +271,7 @@ export function TravelSearch({
                         <button
                           type="button"
                           onClick={() => { onSelect(offer.price, offer.rawOffer); }}
-                          className="text-xs bg-zinc-900 text-white px-3 py-1.5 rounded hover:bg-zinc-700"
+                          className="text-xs bg-green-600 text-white px-3 py-1.5 rounded hover:bg-green-700"
                         >
                           Select
                         </button>
