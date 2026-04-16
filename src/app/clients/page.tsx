@@ -51,7 +51,6 @@ export default function CRMDashboard() {
           <p className="text-zinc-500 text-sm">Pipeline overview and activity</p>
         </div>
       </div>
-      </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
