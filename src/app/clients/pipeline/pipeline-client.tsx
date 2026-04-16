@@ -11,7 +11,9 @@ const CYCLE1 = [
 const CYCLE2 = [
   { key: "PROJECT_DEAL", label: "Presentation", color: "bg-indigo-100 text-indigo-700" },
   { key: "PROPOSAL_SENT", label: "Proposal Sent", color: "bg-yellow-100 text-yellow-700" },
+  { key: "ON_HOLD", label: "On Hold", color: "bg-orange-100 text-orange-700" },
   { key: "WON", label: "Won", color: "bg-green-100 text-green-700" },
+  { key: "LOST", label: "Lost", color: "bg-red-100 text-red-700" },
 ];
 const NEXT_STAGE: Record<string,string> = { LEAD:"SHORTLISTED", SHORTLISTED:"PRESENTATION", PRESENTATION:"PROJECT_DEAL", PROJECT_DEAL:"PROPOSAL_SENT", PROPOSAL_SENT:"WON" };
 const ALL_STAGES = ["LEAD","SHORTLISTED","PRESENTATION","PROJECT_DEAL","PROPOSAL_SENT","WON","LOST","ON_HOLD"];
