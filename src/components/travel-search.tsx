@@ -62,6 +62,15 @@ export function TravelSearch({
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
+  const [selectedOffers, setSelectedOffers] = useState<FlightOffer[]>([]);
+
+  function toggleSelect(offer: FlightOffer) {
+    setSelectedOffers(prev =>
+      prev.find(o => o.id === offer.id)
+        ? prev.filter(o => o.id !== offer.id)
+        : [...prev, offer]
+    );
+  }
 
   async function handleSearch() {
     if (!origin || !destination || !departureDate) {
@@ -187,11 +196,15 @@ export function TravelSearch({
                           </p>
                           <button
                             type="button"
-                            onClick={() => {
-                              onSelect(offer.price, offer.rawOffer);
-                              setOpen(false);
-                            }}
-                            className="mt-1 text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                            onClick={() => toggleSelect(offer)}
+                            className={`mt-1 text-xs px-3 py-1 rounded transition-colors ${selectedOffers.find(o=>o.id===offer.id) ? "bg-green-600 text-white" : "bg-blue-600 text-white"}`}
+                          >
+                            {selectedOffers.find(o=>o.id===offer.id) ? "✓ Added" : "Add to Compare"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => { onSelect(offer.price, offer.rawOffer); setOpen(false); }}
+                            className="mt-1 text-xs bg-zinc-900 text-white px-3 py-1 rounded hover:bg-blue-700"
                           >
                             Select
                           </button>
@@ -203,6 +216,83 @@ export function TravelSearch({
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Comparison Table */}
+      {selectedOffers.length > 0 && (
+        <div className="mt-6 border border-zinc-200 rounded-xl overflow-hidden">
+          <div className="flex items-center justify-between bg-zinc-50 px-4 py-3 border-b border-zinc-200">
+            <h3 className="font-semibold text-zinc-900 text-sm">Comparing {selectedOffers.length} flight{selectedOffers.length > 1 ? "s" : ""}</h3>
+            <button onClick={() => setSelectedOffers([])} className="text-xs text-zinc-400 hover:text-zinc-600">Clear all</button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-zinc-100 text-xs text-zinc-400">
+                  <th className="text-left px-4 py-2">Airline</th>
+                  <th className="text-left px-4 py-2">Departure</th>
+                  <th className="text-left px-4 py-2">Arrival</th>
+                  <th className="text-left px-4 py-2">Duration</th>
+                  <th className="text-left px-4 py-2">Stops</th>
+                  <th className="text-right px-4 py-2">Price</th>
+                  <th className="px-4 py-2"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedOffers.map((offer, i) => (
+                  <tr key={offer.id} className={`border-b border-zinc-50 ${i === 0 ? "bg-green-50" : ""}`}>
+                    <td className="px-4 py-3">
+                      <p className="font-medium text-zinc-900">{offer.airline}</p>
+                      <p className="text-xs text-zinc-400">{offer.flightNumber}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="font-medium">{formatTime(offer.departureTime)}</p>
+                      <p className="text-xs text-zinc-400">{offer.departureAirport}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="font-medium">{formatTime(offer.arrivalTime)}</p>
+                      <p className="text-xs text-zinc-400">{offer.arrivalAirport}</p>
+                    </td>
+                    <td className="px-4 py-3 text-zinc-600">{formatDuration(offer.duration)}</td>
+                    <td className="px-4 py-3">
+                      {offer.stops === 0
+                        ? <span className="text-green-600 text-xs font-medium">Non-stop</span>
+                        : <span className="text-orange-500 text-xs">{offer.stops} stop{offer.stops > 1 ? "s" : ""}</span>}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <p className="font-bold text-blue-600">₹{offer.price.toLocaleString()}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => { onSelect(offer.price, offer.rawOffer); }}
+                          className="text-xs bg-zinc-900 text-white px-3 py-1.5 rounded hover:bg-zinc-700"
+                        >
+                          Select
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedOffers(prev => prev.filter(o => o.id !== offer.id))}
+                          className="text-xs text-zinc-400 hover:text-red-500 px-2"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {selectedOffers.length > 1 && (
+            <div className="px-4 py-2 bg-blue-50 border-t border-blue-100">
+              <p className="text-xs text-blue-600">
+                💡 Best price: <strong>₹{Math.min(...selectedOffers.map(o => o.price)).toLocaleString()}</strong> — {selectedOffers.find(o => o.price === Math.min(...selectedOffers.map(x => x.price)))?.airline}
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>
