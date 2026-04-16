@@ -47,6 +47,7 @@ export async function PATCH(
     if (body.purpose !== undefined) data.purpose = body.purpose;
     if (body.estimatedCost !== undefined) data.estimatedCost = body.estimatedCost;
     if (body.selectedOffer !== undefined) data.selectedOffer = body.selectedOffer;
+    if (body.bookedFlight !== undefined) data.bookedFlight = body.bookedFlight;
     if (body.notes !== undefined) data.notes = body.notes || null;
     if (body.status !== undefined) data.status = body.status;
 

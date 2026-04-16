@@ -22,6 +22,7 @@ model TravelRequest {
   status        TravelStatus @default(DRAFT)
   estimatedCost Float        @default(0)
   selectedOffer Json?
+  bookedFlight  Json?
   notes         String?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt

@@ -28,6 +28,7 @@ interface TravelRequest {
   status: string;
   estimatedCost: number;
   selectedOffer: unknown;
+  bookedFlight: any;
   notes: string | null;
   createdAt: string;
   statusHistory: StatusEntry[];
@@ -206,6 +207,23 @@ export default function TravelDetailPage() {
           <p className="text-zinc-700 text-sm">{req.purpose}</p>
         </div>
 
+        {req.bookedFlight && (
+          <div className="pt-2">
+            <p className="text-zinc-400 text-xs uppercase tracking-wide mb-2">Booked Flight</p>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 bg-green-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">✓</span>
+                </div>
+                <div>
+                  <p className="font-semibold text-sm text-zinc-900">{req.bookedFlight.airline} {req.bookedFlight.flightNumber}</p>
+                  <p className="text-xs text-zinc-500">{req.bookedFlight.departureAirport} → {req.bookedFlight.arrivalAirport} · {(req.bookedFlight.stops||0) === 0 ? 'Non-stop' : req.bookedFlight.stops + ' stop'}</p>
+                </div>
+              </div>
+              <p className="font-bold text-green-600">₹{(req.bookedFlight.price||0).toLocaleString()}</p>
+            </div>
+          </div>
+        )}
         {req.notes && (
           <div className="pt-2">
             <p className="text-zinc-400 text-xs uppercase tracking-wide mb-1">Notes</p>
@@ -225,9 +243,24 @@ export default function TravelDetailPage() {
                       <p className="text-xs text-zinc-500">{o.departureAirport || ''} → {o.arrivalAirport || ''} · {(o.stops||0) === 0 ? 'Non-stop' : (o.stops||0) + ' stop'}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold text-blue-600">₹{(o.price||0).toLocaleString()}</p>
-                    <p className="text-xs text-zinc-400">{(o.duration||'').replace('PT','').replace('H','h ').replace('M','m')}</p>
+                  <div className="text-right flex items-center gap-3">
+                    <div>
+                      <p className="font-bold text-blue-600">₹{(o.price||0).toLocaleString()}</p>
+                      <p className="text-xs text-zinc-400">{(o.duration||'').replace('PT','').replace('H','h ').replace('M','m')}</p>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        await fetch(`/api/travel/${id}`, {
+                          method: 'PATCH',
+                          headers: {'Content-Type':'application/json'},
+                          body: JSON.stringify({ bookedFlight: o })
+                        });
+                        fetchRequest();
+                      }}
+                      className="text-xs bg-zinc-900 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors"
+                    >
+                      Select
+                    </button>
                   </div>
                 </div>
               ))}
