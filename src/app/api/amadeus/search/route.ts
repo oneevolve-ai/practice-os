@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { origin, destination, departureDate, returnDate, travelMode } = body;
 
-  if (travelMode !== "flight") {
+  if (travelMode !== "flight" && travelMode !== "FLIGHT") {
     return NextResponse.json({ offers: [], message: "Flight search only" });
   }
 
