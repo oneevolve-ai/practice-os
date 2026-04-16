@@ -42,6 +42,15 @@ export async function POST(req: NextRequest) {
         stops: leg?.stopCount || 0,
         price: it.price?.raw || 0,
         currency: "INR",
+        segments: (leg?.segments || []).map((s: any) => ({
+          origin: s.origin?.displayCode || "",
+          destination: s.destination?.displayCode || "",
+          departure: s.departure || "",
+          arrival: s.arrival || "",
+          durationInMinutes: s.durationInMinutes || 0,
+          flightNumber: s.flightNumber || "",
+          airline: s.marketingCarrier?.name || "",
+        })),
         rawOffer: it,
       };
     });

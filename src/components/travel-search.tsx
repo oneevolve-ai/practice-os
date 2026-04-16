@@ -3,6 +3,15 @@
 import { useState } from "react";
 import { Search, X, Plane } from "lucide-react";
 
+interface Segment {
+  origin: string;
+  destination: string;
+  departure: string;
+  arrival: string;
+  durationInMinutes: number;
+  flightNumber: string;
+  airline: string;
+}
 interface FlightOffer {
   id: number;
   airline: string;
@@ -15,6 +24,7 @@ interface FlightOffer {
   stops: number;
   price: number;
   currency: string;
+  segments: Segment[];
   rawOffer: unknown;
 }
 
@@ -156,9 +166,18 @@ export function TravelSearch({
                             </p>
                             <p className="text-xs text-zinc-400 mt-0.5">
                               {formatDuration(offer.duration)}
-                              {offer.stops > 0
-                                ? ` · ${offer.stops} stop${offer.stops > 1 ? "s" : ""}`
-                                : " · Non-stop"}
+                              {offer.stops === 0 ? " · Non-stop" : ` · ${offer.stops} stop${offer.stops > 1 ? "s" : ""}`}
+                            </p>
+                            {offer.stops > 0 && offer.segments && offer.segments.length > 1 && (
+                              <div className="mt-1 space-y-0.5">
+                                {offer.segments.slice(0, -1).map((seg, i) => (
+                                  <p key={i} className="text-xs text-orange-500">
+                                    Layover: {seg.destination} · {Math.floor((offer.segments[i+1] ? new Date(offer.segments[i+1].departure).getTime() - new Date(seg.arrival).getTime() : 0) / 60000)}m wait
+                                  </p>
+                                ))}
+                              </div>
+                            )}
+                            <p className="hidden">
                             </p>
                           </div>
                         </div>
