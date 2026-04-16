@@ -104,7 +104,7 @@ export default function PipelineClient() {
         </div>
       )}
       <div className="bg-white rounded-xl border border-zinc-200 p-5 mb-4">
-        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3">Cycle 1 — Qualification</p>
+        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3">Business Leads</p>
         <div className="flex items-center gap-2">
           {CYCLE1.map((stage,idx)=>(
             <div key={stage.key} className="flex items-center flex-1">
@@ -124,7 +124,7 @@ export default function PipelineClient() {
         </button>
       </div>
       <div className="bg-white rounded-xl border border-zinc-200 p-5 mb-6">
-        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3">Cycle 2 — Conversion</p>
+        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-3">Business Deals</p>
         <div className="flex items-center gap-2">
           {CYCLE2.map((stage,idx)=>(
             <div key={stage.key} className="flex items-center flex-1">
