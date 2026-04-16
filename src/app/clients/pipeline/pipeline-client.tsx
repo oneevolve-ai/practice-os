@@ -15,7 +15,7 @@ const CYCLE2 = [
   { key: "WON", label: "Won", color: "bg-green-100 text-green-700" },
   { key: "LOST", label: "Lost", color: "bg-red-100 text-red-700" },
 ];
-const NEXT_STAGE: Record<string,string> = { LEAD:"SHORTLISTED", SHORTLISTED:"PRESENTATION", PRESENTATION:"PROJECT_DEAL", PROJECT_DEAL:"PROPOSAL_SENT", PROPOSAL_SENT:"WON" };
+const NEXT_STAGE: Record<string,string> = { LEAD:"PRESENTATION", SHORTLISTED:"PRESENTATION", PRESENTATION:"PROJECT_DEAL", PROJECT_DEAL:"PROPOSAL_SENT", PROPOSAL_SENT:"WON" };
 const ALL_STAGES = ["LEAD","SHORTLISTED","PRESENTATION","PROJECT_DEAL","PROPOSAL_SENT","WON","LOST","ON_HOLD"];
 const STAGE_LABELS: Record<string,string> = { LEAD:"Lead", SHORTLISTED:"Shortlisted", PRESENTATION:"Organisations", PROJECT_DEAL:"Presentation", PROPOSAL_SENT:"Proposal Sent", WON:"Won", LOST:"Lost", ON_HOLD:"On Hold" };
 export default function PipelineClient() {
