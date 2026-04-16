@@ -173,31 +173,15 @@ export default function NewTravelRequestPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-zinc-700 mb-1">
-                Departure Time
-              </label>
-              <input name="departureTime" type="time" className={inputClass} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-1">
                 Return Date
               </label>
               <input
                 name="returnDate"
                 type="date"
-                required
                 value={returnDate}
                 onChange={(e) => setReturnDate(e.target.value)}
                 className={inputClass}
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-1">
-                Return Time
-              </label>
-              <input name="returnTime" type="time" className={inputClass} />
             </div>
           </div>
 
