@@ -6,7 +6,7 @@ interface Deal { id: string; title: string; stage: string; value: number | null;
 const CYCLE1 = [
   { key: "LEAD", label: "Lead", color: "bg-zinc-100 text-zinc-700" },
   { key: "SHORTLISTED", label: "Shortlisted", color: "bg-blue-100 text-blue-700" },
-  { key: "PRESENTATION", label: "Organisations", color: "bg-purple-100 text-purple-700" },
+  { key: "PRESENTATION", label: "Approval", color: "bg-purple-100 text-purple-700" },
 ];
 const CYCLE2 = [
   { key: "PROJECT_DEAL", label: "Presentation", color: "bg-indigo-100 text-indigo-700" },
@@ -17,7 +17,7 @@ const CYCLE2 = [
 ];
 const NEXT_STAGE: Record<string,string> = { LEAD:"PRESENTATION", SHORTLISTED:"PRESENTATION", PRESENTATION:"PROJECT_DEAL", PROJECT_DEAL:"PROPOSAL_SENT", PROPOSAL_SENT:"WON" };
 const ALL_STAGES = ["LEAD","SHORTLISTED","PRESENTATION","PROJECT_DEAL","PROPOSAL_SENT","WON","LOST","ON_HOLD"];
-const STAGE_LABELS: Record<string,string> = { LEAD:"Lead", SHORTLISTED:"Shortlisted", PRESENTATION:"Organisations", PROJECT_DEAL:"Presentation", PROPOSAL_SENT:"Proposal Sent", WON:"Won", LOST:"Lost", ON_HOLD:"On Hold" };
+const STAGE_LABELS: Record<string,string> = { LEAD:"Lead", SHORTLISTED:"Shortlisted", PRESENTATION:"Approval", PROJECT_DEAL:"Presentation", PROPOSAL_SENT:"Proposal Sent", WON:"Won", LOST:"Lost", ON_HOLD:"On Hold" };
 export default function PipelineClient() {
   const router = useRouter();
   const [deals, setDeals] = useState<Deal[]>([]);
