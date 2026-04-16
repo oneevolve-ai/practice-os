@@ -55,22 +55,18 @@ export default function CRMDashboard() {
       {/* Quick Nav Cards */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         <Link href="/clients/organisations" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
-          <p className="text-2xl font-bold text-zinc-900 mb-1">{totalClients}</p>
           <p className="text-sm font-medium text-zinc-700">Organisations</p>
           <p className="text-xs text-zinc-400 mt-1">View all clients</p>
         </Link>
         <Link href="/clients/pipeline" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
-          <p className="text-2xl font-bold text-blue-600 mb-1">{allDeals.filter(d => !["WON","LOST"].includes(d.stage)).length}</p>
           <p className="text-sm font-medium text-zinc-700">Pipeline</p>
           <p className="text-xs text-zinc-400 mt-1">Active deals</p>
         </Link>
         <Link href="/clients/activity" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
-          <p className="text-2xl font-bold text-purple-600 mb-1">{allDeals.length}</p>
           <p className="text-sm font-medium text-zinc-700">Activity</p>
           <p className="text-xs text-zinc-400 mt-1">Total deals logged</p>
         </Link>
         <Link href="/clients/proposals" className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition-shadow group">
-          <p className="text-2xl font-bold text-green-600 mb-1">{allProposals.length}</p>
           <p className="text-sm font-medium text-zinc-700">Proposals</p>
           <p className="text-xs text-zinc-400 mt-1">Total proposals</p>
         </Link>
