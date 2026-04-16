@@ -212,6 +212,28 @@ export default function TravelDetailPage() {
             <p className="text-zinc-700 text-sm">{req.notes}</p>
           </div>
         )}
+        {req.selectedOffer && Array.isArray(req.selectedOffer) && (req.selectedOffer as any[]).length > 0 && (
+          <div className="pt-2">
+            <p className="text-zinc-400 text-xs uppercase tracking-wide mb-3">Selected Flight Options ({(req.selectedOffer as any[]).length})</p>
+            <div className="space-y-2">
+              {(req.selectedOffer as any[]).map((o: any, i: number) => (
+                <div key={i} className="border border-zinc-200 rounded-lg p-3 bg-zinc-50 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-xs font-bold text-blue-600">{i+1}</div>
+                    <div>
+                      <p className="font-medium text-sm text-zinc-900">{o.airline || 'Unknown'} {o.flightNumber || ''}</p>
+                      <p className="text-xs text-zinc-500">{o.departureAirport || ''} → {o.arrivalAirport || ''} · {(o.stops||0) === 0 ? 'Non-stop' : (o.stops||0) + ' stop'}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-blue-600">₹{(o.price||0).toLocaleString()}</p>
+                    <p className="text-xs text-zinc-400">{(o.duration||'').replace('PT','').replace('H','h ').replace('M','m')}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Multi-City Trip Legs */}
