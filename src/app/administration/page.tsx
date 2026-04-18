@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plane, UserCheck, Package, Users, ShoppingCart, Receipt, Box, Calendar, Briefcase, Ticket } from "lucide-react";
+import { Plane, UserCheck, Package, Users, ShoppingCart, Receipt, Box, Calendar, Briefcase, Ticket, ClipboardList } from "lucide-react";
 
 const modules = [
   { href: "/travel", icon: Plane, label: "Travel", desc: "Travel requests, approvals and bookings", color: "bg-blue-50 text-blue-600", tag: "Live" },
@@ -10,6 +10,7 @@ const modules = [
   { href: "/administration/reimbursement", icon: Receipt, label: "Reimbursement", desc: "Employee expense reimbursements", color: "bg-green-50 text-green-600", tag: "Soon" },
   { href: "/administration/assets", icon: Box, label: "Assets", desc: "Track company assets and allocations", color: "bg-yellow-50 text-yellow-600", tag: "Soon" },
   { href: "/administration/events", icon: Calendar, label: "Events", desc: "Company events and scheduling", color: "bg-pink-50 text-pink-600", tag: "Soon" },
+  { href: "/administration/tasks", icon: ClipboardList, label: "Task Management", desc: "Create, assign and track team tasks", color: "bg-violet-50 text-violet-600", tag: "Soon" },
   { href: "/administration/recruitment", icon: Briefcase, label: "Recruitment", desc: "Job postings, candidates and hiring pipeline", color: "bg-cyan-50 text-cyan-600", tag: "Soon" },
   { href: "/administration/tickets", icon: Ticket, label: "Tickets", desc: "Internal helpdesk and support tickets", color: "bg-red-50 text-red-600", tag: "Soon" },
 ];
