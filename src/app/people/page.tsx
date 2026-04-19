@@ -10,7 +10,6 @@ const modules = [
   { name: "Carry Forward", href: "/people/leave/carry-forward", icon: RefreshCw, desc: "Carry unused leave" },
   { name: "Encashment", href: "/people/leave/encashment", icon: DollarSign, desc: "Convert leave to cash" },
   { name: "Attendance", href: "/people/attendance", icon: Clock, desc: "Check-in & work hours" },
-  { name: "Payslips", href: "/people/payslips", icon: FileText, desc: "Generate & download payslips" },
   { name: "Onboarding", href: "/people/employees/onboarding", icon: ClipboardList, desc: "New joiner checklist" },
   { name: "Performance", href: "/people/performance", icon: TrendingUp, desc: "KRA-based reviews" },
   { name: "Letters", href: "/people/letters", icon: Mail, desc: "Offer & appointment letters" },
