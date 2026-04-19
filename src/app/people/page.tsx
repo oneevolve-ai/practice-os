@@ -12,6 +12,7 @@ const modules = [
   { name: "Attendance", href: "/people/attendance", icon: Clock, desc: "Check-in & work hours" },
   { name: "Onboarding", href: "/people/employees/onboarding", icon: ClipboardList, desc: "New joiner checklist" },
   { name: "Performance", href: "/people/performance", icon: TrendingUp, desc: "KRA-based reviews" },
+  { name: "Payslips", href: "/people/payslips", icon: FileText, desc: "Generate & download payslips" },
   { name: "Letters", href: "/people/letters", icon: Mail, desc: "Offer & appointment letters" },
   { name: "Exit", href: "/people/exit", icon: LogOut, desc: "Offboarding & FnF" },
 ];
