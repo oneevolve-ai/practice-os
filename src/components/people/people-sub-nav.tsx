@@ -36,7 +36,6 @@ const navGroups = [
   {
     label: "Payroll",
     items: [
-      { name: "Payslips", href: "/people/payslips", icon: FileText },
     ],
   },
 ];
