@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 import {
   Users, DollarSign, Building2, FolderKanban,
-  LayoutDashboard, Settings
+  LayoutDashboard, Settings, FileText
 } from "lucide-react";
 
 export function Sidebar() {
@@ -40,6 +40,11 @@ export function Sidebar() {
         <Link href="/administration" className={linkClass("/administration")}>
           <Settings className="w-5 h-5 shrink-0" />
           <span>Administration</span>
+        </Link>
+
+        <Link href="/docs" className={linkClass("/docs")}>
+          <FileText className="w-5 h-5 shrink-0" />
+          <span>Docs</span>
         </Link>
 
         <Link href="/clients" className={linkClass("/clients")}>
