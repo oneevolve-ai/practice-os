@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-function tenantOf(req: NextRequest): string {
-  return req.headers.get("x-tenant-id") ?? "default";
-}
-
-function auditContext(req: NextRequest): { ipAddress: string | null; userAgent: string | null } {
-  const xff = req.headers.get("x-forwarded-for");
-  const ipAddress = xff ? xff.split(",")[0]!.trim() : req.headers.get("x-real-ip");
-  return { ipAddress, userAgent: req.headers.get("user-agent") };
-}
+import { auditContext, tenantOf } from "@/lib/docs-api";
 
 export async function GET(
   req: NextRequest,

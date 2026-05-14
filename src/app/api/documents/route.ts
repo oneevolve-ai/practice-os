@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { Readable } from "node:stream";
 import { prisma } from "@/lib/prisma";
 import { getStorage } from "@/lib/storage";
+import { auditContext, fail, tenantOf } from "@/lib/docs-api";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_TITLE = 200;
@@ -10,20 +11,6 @@ const MAX_CATEGORY = 100;
 const MAX_DESCRIPTION = 2000;
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 100;
-
-function tenantOf(req: NextRequest): string {
-  return req.headers.get("x-tenant-id") ?? "default";
-}
-
-function auditContext(req: NextRequest): { ipAddress: string | null; userAgent: string | null } {
-  const xff = req.headers.get("x-forwarded-for");
-  const ipAddress = xff ? xff.split(",")[0]!.trim() : req.headers.get("x-real-ip");
-  return { ipAddress, userAgent: req.headers.get("user-agent") };
-}
-
-function fail(code: string, message: string, status = 400) {
-  return NextResponse.json({ error: { code, message } }, { status });
-}
 
 export async function GET(req: NextRequest) {
   const tenantId = tenantOf(req);
