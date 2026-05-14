@@ -623,24 +623,6 @@ enum VisitorStatus {
   CANCELLED
 }
 
-model Document {
-  id          String   @id @default(cuid())
-  tenantId    String   @default("default")
-  title       String
-  category    String
-  description String?
-  fileUrl     String?
-  fileType    String?
-  fileSize    Int?
-  tags        String?
-  projectName String?
-  clientName  String?
-  createdBy   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-
 model WhatsappSession {
   id        String   @id @default(cuid())
   phone     String   @unique
@@ -730,4 +712,70 @@ model ExitManagement {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   employee          Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+// ==================== DOCS MODULE (P1a) ====================
+
+model Document {
+  id               String   @id @default(cuid())
+  tenantId         String   @default("default")
+  title            String
+  category         String
+  description      String?
+  status           String   @default("ACTIVE")
+  currentVersionId String?  @unique
+  createdBy        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  deletedAt        DateTime?
+  versions         DocumentVersion[]
+  links            DocumentLink[]
+  auditLogs        DocumentAuditLog[]
+
+  @@index([tenantId, status])
+  @@index([category])
+}
+
+model DocumentVersion {
+  id            String   @id @default(cuid())
+  documentId    String
+  document      Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  versionNumber Int
+  storageKey    String
+  fileName      String
+  fileSize      Int
+  fileType      String?
+  checksum      String
+  uploadedBy    String?
+  uploadedAt    DateTime @default(now())
+
+  @@unique([documentId, versionNumber])
+  @@index([checksum])
+}
+
+model DocumentLink {
+  id               String   @id @default(cuid())
+  documentId       String
+  document         Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  linkedEntityType String
+  linkedEntityId   String
+  linkType         String   @default("ATTACHMENT")
+  createdAt        DateTime @default(now())
+
+  @@unique([documentId, linkedEntityType, linkedEntityId])
+  @@index([linkedEntityType, linkedEntityId])
+}
+
+model DocumentAuditLog {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  action     String
+  actorId    String?
+  ipAddress  String?
+  userAgent  String?
+  details    Json     @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([documentId, createdAt])
 }
