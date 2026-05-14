@@ -43,3 +43,9 @@ next-env.d.ts
 /src/generated/prisma
 /public/uploads/
 hetzner_key
+
+# Docs module storage (D5 ruling — never under /public/)
+/storage/
+
+# Allow .env.example to be committed despite .env* ignore above
+!.env.example
