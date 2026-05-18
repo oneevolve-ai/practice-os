@@ -8,6 +8,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ offers: [], message: "Flight search only" });
   }
 
+  const apiKey = process.env.RAPIDAPI_KEY;
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: { code: "RAPIDAPI_CONFIG_MISSING", message: "RAPIDAPI_KEY environment variable is not configured" } },
+      { status: 500 },
+    );
+  }
+
   try {
     const url = new URL("https://flights-sky.p.rapidapi.com/flights/search-one-way");
     url.searchParams.set("fromEntityId", origin.toUpperCase());
@@ -20,7 +28,7 @@ export async function POST(req: NextRequest) {
     const res = await fetch(url.toString(), {
       headers: {
         "x-rapidapi-host": "flights-sky.p.rapidapi.com",
-        "x-rapidapi-key": process.env.RAPIDAPI_KEY || "14c0c3da0cmsh945240a820de1cep1f231cjsnc0259a9c1312",
+        "x-rapidapi-key": apiKey,
       },
     });
 
