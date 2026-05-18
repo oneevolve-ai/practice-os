@@ -1,5 +1,5 @@
-const GUPSHUP_API_KEY = "sk_d5f0169e5d7440fda2f5ec00dc09e30d";
-const GUPSHUP_SOURCE = "15559416292";
+const GUPSHUP_API_KEY = process.env.GUPSHUP_API_KEY ?? "";
+const GUPSHUP_SOURCE = process.env.GUPSHUP_SOURCE ?? "";
 
 export async function sendWhatsApp(phone: string, message: string) {
   const cleanPhone = phone.replace(/\D/g, "");

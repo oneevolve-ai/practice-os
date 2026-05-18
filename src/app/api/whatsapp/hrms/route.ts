@@ -104,6 +104,13 @@ async function handleLocation(phone: string, latitude: number, longitude: number
 }
 
 export async function POST(req: NextRequest) {
+  if (!process.env.GUPSHUP_API_KEY || !process.env.GUPSHUP_SOURCE) {
+    return NextResponse.json(
+      { error: { code: "GUPSHUP_CONFIG_MISSING", message: "GUPSHUP_API_KEY and GUPSHUP_SOURCE environment variables must be configured" } },
+      { status: 500 },
+    );
+  }
+
   try {
     const body = await req.json();
     console.log("[WhatsApp HRMS webhook]", JSON.stringify(body).slice(0, 200));
